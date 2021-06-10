@@ -1,3 +1,11 @@
+#include "output/terminal.h"
+
+Terminal::Terminal(size_t width, size_t height, uint16_t* screenstart)
+	:_vga(width, height, screenstart){
+
+}
+
+/*
 #include "kernel/tty.h"
 #include "kernel/vga.h"
 
@@ -62,3 +70,4 @@ void terminal_writestring(const char* data)
 {
 	terminal_write(data, strlen(data));
 }
+*/

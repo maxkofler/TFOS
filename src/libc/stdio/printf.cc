@@ -1,5 +1,7 @@
 //printf, höchstprofessionell vo osdev geflodert lol.
 
+#include "libc/stdio.h"
+
 #include <limits.h>
 #include <stdbool.h>
 #include <stdarg.h>

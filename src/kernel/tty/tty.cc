@@ -1,5 +1,5 @@
-#include "../tty.h"
-#include "../vga.h"
+#include "kernel/tty.h"
+#include "kernel/vga.h"
 
 size_t strlen(const char* str) 
 {

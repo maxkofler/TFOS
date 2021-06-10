@@ -1,3 +1,6 @@
+#ifndef __KERNEL_VGA_H__
+#define __KERNEL_VGA_H__
+
 #include <stdint.h>
 
 enum vga_color {
@@ -19,6 +22,8 @@ enum vga_color {
         VGA_COLOR_WHITE = 15,
 };
 
-static inline uint8_t vga_entry_color(enum vga_color fg, enum vga_color bg);
+inline uint8_t vga_entry_color(enum vga_color fg, enum vga_color bg);
 
-static inline uint16_t vga_entry(unsigned char uc, uint8_t color);
+inline uint16_t vga_entry(unsigned char uc, uint8_t color);
+
+#endif

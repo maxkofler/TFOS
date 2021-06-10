@@ -1,6 +1,7 @@
 {
     "makefile.extensionOutputFolder": "./.vscode",
     "files.associations": {
-        "vga.h": "c"
+        "vga.h": "c",
+        "tty.h": "c"
     }
 }

@@ -1,0 +1,421 @@
+make all --print-data-base --no-builtin-variables --no-builtin-rules --question
+# GNU Make 4.3
+# Built for x86_64-pc-linux-gnu
+# Copyright (C) 1988-2020 Free Software Foundation, Inc.
+# License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+# This is free software: you are free to change and redistribute it.
+# There is NO WARRANTY, to the extent permitted by law.
+
+# Make data base, printed on Thu Jun 10 12:29:03 2021
+
+# Variables
+
+# environment
+ZPLUG_PROTOCOL = HTTPS
+# environment
+GDK_BACKEND = x11
+# environment
+LC_ALL = C
+# environment
+NO_AT_BRIDGE = 1
+# environment
+GTK_RC_FILES = /etc/gtk/gtkrc:/home/max/.gtkrc:/home/max/.config/gtkrc
+# environment
+ZPLUG_LOG_LOAD_FAILURE = false
+# environment
+ 
+_ZPLUG_AWKPATH = /home/max/.zplug/misc/contrib
+# environment
+ZPLUG_HOME = /home/max/.zplug
+# environment
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-2dadd621-4667-4b3f-916f-f4472fbc0dcb.sock
+# environment
+KONSOLE_DBUS_SERVICE = :1.39
+# environment
+VSCODE_CWD = /home/max/code/TFOS
+# environment
+WINDOWID = 1
+# environment
+ZSH_CACHE_DIR = /home/max/.zplug/repos/robbyrussell/oh-my-zsh/cache/
+# environment
+PERIOD = 30
+# default
+MAKE_COMMAND := make
+# environment
+FPATH = /home/max/.zplug/misc/completions:/home/max/.zplug/base/sources:/home/max/.zplug/autoload:/home/max/.zplug/base/utils:/home/max/.zplug/base/job:/home/max/.zplug/base/log:/home/max/.zplug/base/io:/home/max/.zplug/base/core:/home/max/.zplug/base/base:/home/max/.zplug/autoload/commands:/home/max/.zplug/autoload/options:/home/max/.zplug/autoload/tags:/usr/local/share/zsh/site-functions:/usr/share/zsh/site-functions:/usr/share/zsh/functions/Calendar:/usr/share/zsh/functions/Chpwd:/usr/share/zsh/functions/Completion:/usr/share/zsh/functions/Completion/Base:/usr/share/zsh/functions/Completion/Linux:/usr/share/zsh/functions/Completion/Unix:/usr/share/zsh/functions/Completion/X:/usr/share/zsh/functions/Completion/Zsh:/usr/share/zsh/functions/Exceptions:/usr/share/zsh/functions/Math:/usr/share/zsh/functions/MIME:/usr/share/zsh/functions/Misc:/usr/share/zsh/functions/Newuser:/usr/share/zsh/functions/Prompts:/usr/share/zsh/functions/TCP:/usr/share/zsh/functions/VCS_Info:/usr/share/zsh/functions/VCS_Info/Backends:/usr/share/zsh/functions/Zftp:/usr/share/zsh/functions/Zle
+# environment
+_ZPLUG_PREZTO = sorin-ionescu/prezto
+# automatic
+@D = $(patsubst %/,%,$(dir $@))
+# environment
+ZPLUG_LOG_LOAD_SUCCESS = false
+# environment
+KONSOLE_VERSION = 210401
+# environment
+ZPLUG_CACHE_DIR = /home/max/.zplug/cache
+# environment
+VSCODE_HANDLES_UNCAUGHT_ERRORS = true
+# default
+.VARIABLES := 
+# environment
+PWD = /home/max/code/TFOS
+# automatic
+%D = $(patsubst %/,%,$(dir $%))
+# environment
+ZPLUG_ERROR_LOG = /home/max/.zplug/.error_log
+# environment
+MAIL = /var/spool/mail/max
+# environment
+ZPLUG_REPOS = /home/max/.zplug/repos
+# environment
+OLDPWD = /home/max
+# environment
+KONSOLE_DBUS_WINDOW = /Windows/1
+# automatic
+^D = $(patsubst %/,%,$(dir $^))
+# environment
+VSCODE_LOG_STACK = false
+# automatic
+%F = $(notdir $%)
+# environment
+XDG_SESSION_PATH = /org/freedesktop/DisplayManager/Session1
+# environment
+LANG = C
+# environment
+XAUTHORITY = /tmp/xauth-1000-_1
+# default
+.LOADED := 
+# default
+.INCLUDE_DIRS = /usr/include /usr/local/include /usr/include
+# environment
+COLORFGBG = 15;0
+# makefile
+MAKEFLAGS = pqrR
+# environment
+PLASMA_USE_QT_SCALING = 1
+# environment
+ZPLUG_FILTER = fzf-tmux:fzf:peco:percol:fzy:zaw
+# environment
+_ZPLUG_CONFIG_SUBSHELL = :
+# environment
+_ZPLUG_VERSION = 2.4.2
+# makefile
+CURDIR := /home/max/code/TFOS
+# environment
+VSCODE_PIPE_LOGGING = true
+# environment
+SCRIPT_DIR = /home/max/scripts
+# environment
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = true
+# automatic
+*D = $(patsubst %/,%,$(dir $*))
+# environment
+PAM_KWALLET5_LOGIN = /run/user/1000/kwallet5.socket
+# environment
+ZPLUG_LOADFILE = /home/max/.zplug/packages.zsh
+# environment
+MFLAGS = -pqrR
+# default
+.SHELLFLAGS := -c
+# environment
+WAYLAND_DISPLAY = wayland-0
+# automatic
++D = $(patsubst %/,%,$(dir $+))
+# environment
+XCURSOR_THEME = breeze_cursors
+# environment
+XDG_SESSION_DESKTOP = KDE
+# environment
+VSCODE_CRASH_REPORTER_START_OPTIONS = {"companyName":"Microsoft","productName":"VSCode","submitURL":"appcenter://code?aid=fba07a4d-84bd-4fc8-a125-9640fc8ce171&uid=ea119798-8417-4db8-ac63-9c179923170e&iid=ea119798-8417-4db8-ac63-9c179923170e&sid=ea119798-8417-4db8-ac63-9c179923170e","uploadToServer":true}
+# makefile (from 'Makefile', line 1)
+MAKEFILE_LIST := Makefile
+# automatic
+@F = $(notdir $@)
+# environment
+ZSH = /home/max/.zplug/repos/robbyrussell/oh-my-zsh
+# environment
+VSCODE_VERBOSE_LOGGING = true
+# environment
+VSCODE_PID = 7260
+# environment
+XDG_SESSION_TYPE = wayland
+# automatic
+?D = $(patsubst %/,%,$(dir $?))
+# environment
+_ZPLUG_OHMYZSH = robbyrussell/oh-my-zsh
+# environment
+SESSION_MANAGER = local/BladeMax:@/tmp/.ICE-unix/5956,unix/BladeMax:/tmp/.ICE-unix/5956
+# automatic
+*F = $(notdir $*)
+# environment
+CHROME_DESKTOP = code-url-handler.desktop
+# environment
+DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1000/bus
+# automatic
+<D = $(patsubst %/,%,$(dir $<))
+# environment
+YSU_VERSION = 1.7.3
+# environment
+VSCODE_NLS_CONFIG = {"locale":"en-gb","availableLanguages":{},"_languagePackSupport":true}
+# environment
+BREAKPAD_DUMP_LOCATION = /home/max/.config/Code/exthost Crash Reports
+# default
+MAKE_HOST := x86_64-pc-linux-gnu
+# makefile
+SHELL = /bin/sh
+# default
+MAKECMDGOALS := all
+# environment
+SHLVL = 2
+# environment
+PROFILEHOME = /home/max
+# environment
+MAKELEVEL := 0
+# default
+MAKE = $(MAKE_COMMAND)
+# environment
+ZPLUG_USE_CACHE = true
+# environment
+PATH = /home/max/.zplug/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/lib/jvm/default/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/home/max/.local/bin
+# default
+MAKEFILES := 
+# environment
+LANGUAGE = 
+# environment
+MOTD_SHOWN = pam
+# automatic
+^F = $(notdir $^)
+# environment
+VSCODE_LOG_NATIVE = false
+# automatic
+?F = $(notdir $?)
+# environment
+KDE_APPLICATIONS_AS_SCOPE = 1
+# environment
+ZPLUG_THREADS = 16
+# environment
+XDG_SEAT = seat0
+# environment
+XDG_CURRENT_DESKTOP = KDE
+# automatic
++F = $(notdir $+)
+# environment
+XDG_SEAT_PATH = /org/freedesktop/DisplayManager/Seat0
+# environment
+DESKTOP_SESSION = plasmawayland
+# environment
+ORIGINAL_XDG_CURRENT_DESKTOP = KDE
+# 'override' directive
+GNUMAKEFLAGS := 
+# environment
+BROWSER = /usr/bin/qutebrowser
+# environment
+ZPLUG_BIN = /home/max/.zplug/bin
+# environment
+LOGNAME = max
+# environment
+XDG_VTNR = 2
+# makefile
+.DEFAULT_GOAL := all
+# environment
+EDITOR = /usr/bin/nvim
+# environment
+DISPLAY = :1
+# environment
+USER = max
+# default
+MAKE_VERSION := 4.3
+# environment
+KDE_SESSION_UID = 1000
+# environment
+KONSOLE_DBUS_SESSION = /Sessions/1
+# environment
+QT_WAYLAND_FORCE_DPI = 96
+# environment
+PAGER = /usr/bin/vimpager
+# environment
+VSCODE_NODE_CACHED_DATA_DIR = /home/max/.config/Code/CachedData/cfa2e218100323074ac1948c885448fdf4de2a7f
+# environment
+_ = /usr/bin/make
+# environment
+ZPLUG_ROOT = /home/max/.zplug
+# environment
+XDG_RUNTIME_DIR = /run/user/1000
+# environment
+COLORTERM = truecolor
+# environment
+XDG_SESSION_CLASS = user
+# environment
+VSCODE_AMD_ENTRYPOINT = vs/workbench/services/extensions/node/extensionHostProcess
+# environment
+GTK2_RC_FILES = /etc/gtk-2.0/gtkrc:/home/max/.gtkrc-2.0:/home/max/.config/gtkrc-2.0
+# environment
+HOME = /home/max
+# environment
+_JAVA_OPTIONS = -Dawt.useSystemAAFontSettings=setting
+# environment
+ELECTRON_RUN_AS_NODE = 1
+# environment
+VSCODE_IPC_HOOK = /run/user/1000/vscode-2718e749-1.56.0-main.sock
+# environment
+TERM = xterm-256color
+# environment
+XDG_SESSION_ID = 2
+# environment
+XCURSOR_SIZE = 24
+# default
+.RECIPEPREFIX := 
+# automatic
+<F = $(notdir $<)
+# default
+SUFFIXES := 
+# environment
+QT_AUTO_SCREEN_SCALE_FACTOR = 0
+# environment
+VSCODE_CLI = 1
+# environment
+ELECTRON_NO_ATTACH_CONSOLE = 1
+# environment
+SHELL_SESSION_ID = 1f673fbcfa96483f8aa754f53fe64354
+# environment
+KDE_SESSION_VERSION = 5
+# default
+.FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell nocomment grouped-target extra-prereqs archives jobserver output-sync check-symlink guile load
+# environment
+_ZPLUG_URL = https://github.com/zplug/zplug
+# environment
+KDE_FULL_SESSION = true
+# variable set hash-table stats:
+# Load=137/1024=13%, Rehash=0, Collisions=8/170=5%
+
+# Pattern-specific Variable Values
+
+# No pattern-specific variable values.
+
+# Directories
+
+# . (device 26, inode 1353662): 14 files, no impossibilities.
+
+# 14 files, no impossibilities in 1 directories.
+
+# Implicit Rules
+
+# No implicit rules.
+
+# Files
+
+iso:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 20):
+	make test
+	-mkdir -p iso/boot/grub
+	cp build/tfos.bin iso/boot/tfos.bin
+	cp grub.cfg iso/boot/grub/grub.cfg
+	grub-mkrescue -o tfos.iso iso
+
+# Not a target:
+Makefile:
+#  Implicit rule search has been done.
+#  Last modified 2021-06-10 12:28:52.753397972
+#  File has been updated.
+#  Successfully updated.
+
+clean:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 35):
+	rm -rf build iso *.iso
+
+boot:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 30):
+	make clean
+	make all
+	qemu-system-x86_64 -cpu pentium2 -cdrom tfos.iso
+
+# Not a target:
+.DEFAULT:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+all:
+#  Command line target.
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: ''
+#  File does not exist.
+#  File has been updated.
+#  Needs to be updated (-q is set).
+# automatic
+# @ := all
+# automatic
+# * := 
+# automatic
+# < := 
+# automatic
+# + := 
+# automatic
+# % := 
+# automatic
+# ^ := 
+# automatic
+# ? := 
+# automatic
+# | := 
+# variable set hash-table stats:
+# Load=8/32=25%, Rehash=0, Collisions=1/11=9%
+#  recipe to execute (from 'Makefile', line 2):
+	make clean
+	make build
+	make iso
+
+build:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 7):
+	-mkdir build
+	gcc -Iinclude -c src/kernel/kernel.c -o build/kernel.o -ffreestanding -m32 -Wall -Wextra
+	#Compile output modules
+	-mkdir build/vga
+	gcc -Iinclude/ -c src/vga/vga.c -o build/vga/vga.o -ffreestanding -m32 -Wall -Wextra
+	#Assemble boot entry module
+	gcc -c boot.s -o build/boot.o -m32
+	gcc -T linker.ld -o build/tfos.bin -ffreestanding -nostdlib build/boot.o build/vga/vga.o build/kernel.o -static -m32
+
+test:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 27):
+	sh multibootTest.sh
+
+# Not a target:
+.SUFFIXES:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+ 
+
+# files hash-table stats:
+# Load=9/1024=1%, Rehash=0, Collisions=0/21=0%
+# VPATH Search Paths
+
+# No 'vpath' search paths.
+
+# No general ('VPATH' variable) search path.
+
+# strcache buffers: 1 (0) / strings = 23 / storage = 182 B / avg = 7 B
+# current buf: size = 8162 B / used = 182 B / count = 23 / avg = 7 B
+
+# strcache performance: lookups = 36 / hit rate = 36%
+# hash-table stats:
+# Load=23/8192=0%, Rehash=0, Collisions=0/36=0%
+# Finished Make data base on Thu Jun 10 12:29:03 2021
+
+ 

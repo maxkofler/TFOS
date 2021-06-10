@@ -1,12 +1,20 @@
 all:
+	make clean
 	make build
 	make iso
 
 build:
 	-mkdir build
-	gcc -c src/kernel/kernel.c -o build/kernel.o -ffreestanding -m32 -Wall -Wextra
+	gcc -Iinclude -c src/kernel/kernel.c -o build/kernel.o -ffreestanding -m32 -Wall -Wextra
+
+	#Compile output modules
+	-mkdir build/vga
+	gcc -Iinclude/ -c src/vga/vga.c -o build/vga/vga.o -ffreestanding -m32 -Wall -Wextra
+
+	#Assemble boot entry module
 	gcc -c boot.s -o build/boot.o -m32
-	gcc -T linker.ld -o build/tfos.bin -ffreestanding -nostdlib build/boot.o build/kernel.o -static -m32
+
+	gcc -T linker.ld -o build/tfos.bin -ffreestanding -nostdlib build/boot.o build/vga/vga.o build/kernel.o -static -m32
 
 iso:
 	make test

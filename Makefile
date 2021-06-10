@@ -5,8 +5,10 @@ all:
 build:
 	-mkdir build
 	gcc -c src/kernel/kernel.c -o build/kernel.o -ffreestanding -m32 -Wall -Wextra
+	gcc -c src/kernel/tty/tty.c -o build/tty.o -ffreestanding -m32 -Wall -Wextra
+	gcc -c src/kernel/vga/vga.c -o build/vga.o -ffreestanding -m32 -Wall -Wextra
 	gcc -c boot.s -o build/boot.o -m32
-	gcc -T linker.ld -o build/tfos.bin -ffreestanding -nostdlib build/boot.o build/kernel.o -static -m32
+	gcc -T linker.ld -o build/tfos.bin -ffreestanding -nostdlib build/boot.o build/kernel.o build/tty.o build/vga.o -static -m32
 
 iso:
 	make multibootTest

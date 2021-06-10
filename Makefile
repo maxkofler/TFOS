@@ -18,5 +18,10 @@ iso:
 test:
 	sh multibootTest.sh
 
+boot:
+	make clean
+	make all
+	qemu-system-x86_64 -cpu pentium2 -cdrom tfos.iso
+
 clean:
 	rm -rf build iso

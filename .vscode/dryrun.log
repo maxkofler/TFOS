@@ -1,7 +1,0 @@
-make --dry-run --keep-going --print-directory
-make: Entering directory '/home/max/code/TFOS'
-make clean
-make build
-make iso
-make: Leaving directory '/home/max/code/TFOS'
- 

@@ -5,6 +5,8 @@ CPP_SRC = $(wildcard **/*.cpp)
 GAS_SRC = $(wildcard **/*.S)
 NASM_SRC = $(wildcard **/*.asm)
 
+INCLUDE = -Iinclude/
+
 C_FLAGS = -Wall -ffreestanding -m32
 CPP_FLAGS = -Wall -ffreestanding -m32
 GAS_FLAGS = -Wall -ffreestanding -m32
@@ -18,13 +20,13 @@ NASM_OBJ = $(NASM_SRC:.asm=.asm.o)
 
 
 %.c.o: %.c
-	gcc $(C_FLAGS) -c $< -o $@
+	gcc $(C_FLAGS) $(INCLUDE) -c $< -o $@
 
 %.cpp.o: %.cpp
-	g++ $(CPP_FLAGS) -c $< -o $@
+	g++ $(CPP_FLAGS) $(INCLUDE) -c $< -o $@
 
 %.S.o: %.S
-	gcc $(GAS_FLAGS) -c $< -o $@
+	gcc $(GAS_FLAGS) $(INCLUDE) -c $< -o $@
 
 %.asm.o: %.asm
 	nasm $< -o $@

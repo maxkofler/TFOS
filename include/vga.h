@@ -1,23 +1,54 @@
 #ifndef __VGA_H__
 #define __VGA_H__
 
-enum VGA_color{
-    VGA_COLOR_BLACK = 0,
-	VGA_COLOR_BLUE = 1,
-	VGA_COLOR_GREEN = 2,
-	VGA_COLOR_CYAN = 3,
-	VGA_COLOR_RED = 4,
-	VGA_COLOR_MAGENTA = 5,
-	VGA_COLOR_BROWN = 6,
-	VGA_COLOR_LIGHT_GREY = 7,
-	VGA_COLOR_DARK_GREY = 8,
-	VGA_COLOR_LIGHT_BLUE = 9,
-	VGA_COLOR_LIGHT_GREEN = 10,
-	VGA_COLOR_LIGHT_CYAN = 11,
-	VGA_COLOR_LIGHT_RED = 12,
-	VGA_COLOR_LIGHT_MAGENTA = 13,
-	VGA_COLOR_LIGHT_BROWN = 14,
-	VGA_COLOR_WHITE = 15,
+#include <stdint.h>
+
+namespace VGA{
+		enum color{
+		BLACK = 0,
+		BLUE = 1,
+		GREEN = 2,
+		CYAN = 3,
+		RED = 4,
+		MAGENTA = 5,
+		BROWN = 6,
+		LIGHT_GREY = 7,
+		DARK_GREY = 8,
+		LIGHT_BLUE = 9,
+		LIGHT_GREEN = 10,
+		LIGHT_CYAN = 11,
+		LIGHT_RED = 12,
+		LIGHT_MAGENTA = 13,
+		LIGHT_BROWN = 14,
+		WHITE = 15,
+	};
+
+	class VGA{
+
+	public:
+								//
+		void					init(uint16_t* vga_start, uint16_t width, uint16_t height);
+		void					setColor(enum color fg, enum color bg);
+		void					clear();
+
+		void					put(uint16_t x, uint16_t y, char c);
+
+		void					setCursor(uint16_t x, uint16_t y);
+		void					updateCursor();
+
+	private:
+		uint8_t					_col;
+
+		uint16_t				_width;
+		uint16_t				_height;
+
+		uint16_t				_c_x;
+		uint16_t				_c_y;
+
+		uint16_t*				_buffer;
+	};
 };
+
+
 
 #endif

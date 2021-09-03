@@ -1,9 +1,10 @@
 all: tfos.bin
 
-C_SRC = $(wildcard **/*.c)
-CPP_SRC = $(wildcard **/*.cpp)
-GAS_SRC = $(wildcard **/*.S)
-NASM_SRC = $(wildcard **/*.asm)
+#C_SRC = $(wildcard **/*.c)
+C_SRC = $(shell find src/ -type f -name '*.c')
+CPP_SRC = $(shell find src/ -type f -name '*.cpp')
+GAS_SRC = $(shell find src/ -type f -name '*.S')
+NASM_SRC = $(shell find src/ -type f -name '*.asm')
 
 INCLUDE = -Iinclude/
 

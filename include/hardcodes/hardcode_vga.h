@@ -1,0 +1,10 @@
+#ifndef __HARDCODE_VGA_H__
+#define __HARDCODE_VGA_H__
+
+#define HARDCODE_VGA_CTRL 0x3d4
+#define HARDCODE_VGA_DATA 0x3d5
+
+#define HARDCODE_VGA_OFFSET_LOW 0x0f
+#define HARDCODE_VGA_OFFSET_HIGH 0x0e
+
+#endif

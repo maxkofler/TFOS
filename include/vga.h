@@ -1,7 +1,13 @@
 #ifndef __VGA_H__
 #define __VGA_H__
 
+namespace VGA{
+	class VGA;
+}
+
 #include <stdint.h>
+
+#include "terminal.h"
 
 namespace VGA{
 		enum color{
@@ -26,8 +32,8 @@ namespace VGA{
 	class VGA{
 
 	public:
+		VGA(uint16_t* vga_start, uint16_t width, uint16_t height);
 								//
-		void					init(uint16_t* vga_start, uint16_t width, uint16_t height);
 		void					setColor(enum color fg, enum color bg);
 		void					clear();
 
@@ -35,6 +41,9 @@ namespace VGA{
 
 		void					setCursor(uint16_t x, uint16_t y);
 		void					updateCursor();
+		void					enableCursor(uint8_t cStart = 0, uint8_t cEnd = 15);
+
+		friend class 			Terminal::Terminal;
 
 	private:
 		uint8_t					_col;
@@ -42,8 +51,7 @@ namespace VGA{
 		uint16_t				_width;
 		uint16_t				_height;
 
-		uint16_t				_c_x;
-		uint16_t				_c_y;
+		uint16_t				_cursor_offset;
 
 		uint16_t*				_buffer;
 	};

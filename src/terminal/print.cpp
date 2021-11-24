@@ -7,7 +7,7 @@ namespace Terminal{
             this->_cursor_pos += (width - (this->_cursor_pos % width));
 		} else {
 			*((uint16_t*) this->_vga->_buffer + this->_cursor_pos) = (uint16_t) c | (uint16_t) this->_vga->_col << 8;
-        	this->_cursor_pos++;
+            this->_cursor_pos++;
 		}
 
         this->_vga->_cursor_offset = this->_cursor_pos;

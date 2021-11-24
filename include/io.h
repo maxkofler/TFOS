@@ -17,7 +17,7 @@ namespace IO{
 	 * @param	port			The port to write to
 	 * @param	data			The data byte to write
 	 */
-    void out(uint16_t port, uint8_t data);
+    void						out(uint16_t port, uint8_t data);
 }
 
 #endif

@@ -4,7 +4,19 @@
 #include <stdint.h>
 
 namespace IO{
-    uint8_t in(uint16_t port);
+
+	/**
+	 * @brief	Reads a byte from the specified port of the cpu
+	 * @param	port			The port to read from
+	 * @return	The byte read
+	 */
+	uint8_t						in(uint16_t port);
+
+	/**
+	 * @brief	Writes a byte to the specified port of the cpu
+	 * @param	port			The port to write to
+	 * @param	data			The data byte to write
+	 */
     void out(uint16_t port, uint8_t data);
 }
 

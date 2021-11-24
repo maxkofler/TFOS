@@ -33,14 +33,49 @@ namespace VGA{
 
 	public:
 		VGA(uint16_t* vga_start, uint16_t width, uint16_t height);
-								//
+
+		/**
+		 * @brief	Sets the VGA color of the following characters
+		 * @param	fg			Foreground
+		 * @param	bg			Background
+		 */
 		void					setColor(enum color fg, enum color bg);
+
+		/**
+		 * @brief	Clears the screen
+		 * @note	The background of the whole screen will be the background color
+		 */
 		void					clear();
 
+		/**
+		 * @brief	Puts the provided character c on the screen
+		 * @param	x			X coordinate
+		 * @param	y			Y coordinate
+		 * @param	c			The character to pring
+		 */
 		void					put(uint16_t x, uint16_t y, char c);
 
+		/**
+		 * @brief	Moves the text mode cursor of the vga card to the specified location
+		 * @param	x			X coordinate
+		 * @param	y			Y coordinate
+		 * @note	Calls updateCursor() immediately
+		 */
 		void					setCursor(uint16_t x, uint16_t y);
+
+		/**
+		 * @brief	Moves the cursor to the coordinates specified by setCursor()
+		 * @note	Gets called by setCursor() automatically
+		 */
 		void					updateCursor();
+
+		/**
+		 * @brief	Enabled the text mode cursor of the vga card
+		 * @param	cStart		Specifies the first horizontal line from to down to draw, read note
+		 * @param	cEnd		Specifies the last horizontal line from to down to draw, read not
+		 * @note	enableCursor(0, 15)		->	full height
+		 *			enableCursor(14, 15)	->	small underscore cursor: '_'
+		 */
 		void					enableCursor(uint8_t cStart = 0, uint8_t cEnd = 15);
 
 		friend class 			Terminal::Terminal;

@@ -13,6 +13,7 @@ extern "C" void kernel_main(){
 
     Terminal::Terminal tty;
     tty.setVGA(&vga);
+    tty.setCursor(0, 0);
     tty.print("No warranty is provided, use this at your own risk!\n");
     tty.print(">");
 

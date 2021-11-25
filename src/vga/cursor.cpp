@@ -9,17 +9,17 @@ namespace VGA{
     }
 
     void VGA::updateCursor(){
-        IO::out(HARDCODE_VGA_CTRL, HARDCODE_VGA_OFFSET_HIGH);
-        IO::out(HARDCODE_VGA_DATA, (uint8_t)(this->_cursor_offset >> 8));
-        IO::out(HARDCODE_VGA_CTRL, HARDCODE_VGA_OFFSET_LOW);
-        IO::out(HARDCODE_VGA_DATA, (uint8_t)(this->_cursor_offset & 0xFF));
+        IO::outb(HARDCODE_VGA_CTRL, HARDCODE_VGA_OFFSET_HIGH);
+        IO::outb(HARDCODE_VGA_DATA, (uint8_t)(this->_cursor_offset >> 8));
+        IO::outb(HARDCODE_VGA_CTRL, HARDCODE_VGA_OFFSET_LOW);
+        IO::outb(HARDCODE_VGA_DATA, (uint8_t)(this->_cursor_offset & 0xFF));
     }
 
     void VGA::enableCursor(uint8_t cStart, uint8_t cEnd){
-        IO::out(0x3D4, 0x0A);
-        IO::out(0x3D5, (IO::in(0x3D5) & 0xC0) | cStart);
+        IO::outb(0x3D4, 0x0A);
+        IO::outb(0x3D5, (IO::inb(0x3D5) & 0xC0) | cStart);
     
-        IO::out(0x3D4, 0x0B);
-        IO::out(0x3D5, (IO::in(0x3D5) & 0xE0) | cEnd);
+        IO::outb(0x3D4, 0x0B);
+        IO::outb(0x3D5, (IO::inb(0x3D5) & 0xE0) | cEnd);
     }
 }

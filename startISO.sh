@@ -1,3 +1,6 @@
+cmake -B build .
+cmake --build build
+
 if grub-file --is-x86-multiboot build/tfos.bin; then
     echo file is multiboot
 
@@ -7,7 +10,7 @@ if grub-file --is-x86-multiboot build/tfos.bin; then
 
     cp grub.cfg iso/boot/grub/grub.cfg
 
-    grub-mkrescue -o tfos.iso iso
+    sudo grub-mkrescue -o tfos.iso iso
 
     qemu-system-x86_64 -cpu pentium2 -cdrom tfos.iso
 

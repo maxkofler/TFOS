@@ -2,6 +2,7 @@
     "makefile.extensionOutputFolder": "./.vscode",
     "files.associations": {
         "vga.h": "c",
-        "tty.h": "c"
+        "tty.h": "c",
+        "idt_gate.h": "c"
     }
 }

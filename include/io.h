@@ -4,7 +4,6 @@
 #include <stdint.h>
 
 namespace IO{
-
 	/**
 	 * @brief	Reads a byte from the specified port of the cpu
 	 * @param	port			The port to read from
@@ -17,7 +16,7 @@ namespace IO{
 	 * @param	port			The port to write to
 	 * @param	data			The data byte to write
 	 */
-    void						outb(uint16_t port, uint8_t data);
+	void						outb(uint16_t port, uint8_t data);
 }
 
 #endif

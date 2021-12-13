@@ -1,6 +1,10 @@
 #include "vga.h"
 #include "terminal.h"
 
+Terminal::Terminal kernelTTY;
+
+void isr_install();
+
 extern "C" void kernel_main(){
 
     int col = VGA::BLACK;
@@ -11,11 +15,25 @@ extern "C" void kernel_main(){
     vga.enableCursor(14, 15);
     vga.clear();
 
-    Terminal::Terminal tty;
-    tty.setVGA(&vga);
-    tty.setCursor(0, 0);
-    tty.print("No warranty is provided, use this at your own risk!\n");
-    tty.print(">");
+    kernelTTY.setVGA(&vga);
+    kernelTTY.setCursor(0, 0);
+
+    kernelTTY.print("Assembling isrs...\n");
+
+	isr_install();
+
+	kernelTTY.print("Enabling external interrupts\n");
+	//asm volatile("sti");
+
+    kernelTTY.print("No warranty is provided, use this at your own risk!\n");
+    kernelTTY.print(">");
+
+    //asm volatile ("1: jmp 1b");
+    //asm volatile("int 3");
+    for (int i = 0; i < 10000000; i++);
+    
+    int nul = 0 / 0;
+    //asm volatile ("1: jmp 1b");
 
     while(1);
 }

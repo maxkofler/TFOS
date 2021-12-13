@@ -13,6 +13,6 @@ typedef struct {
 
 extern idt_gate_t idt[];
 
-void set_idt_gate(int n, uint32_t handler);
+extern void set_idt_gate(int n, uint32_t handler);
 
 #endif

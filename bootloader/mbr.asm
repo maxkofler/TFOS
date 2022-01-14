@@ -26,7 +26,7 @@ jmp $
 [bits 16]
 load_kernel:
 	mov bx, KERNEL_OFFSET		;Load the kernel offset
-	mov dh, 2					;Load 2 sectors				TODO: kernel could be larger!
+	mov dh, 10					;Load 10 sectors				TODO: kernel could be larger!
 	mov dl, [BOOT_DRIVE]		;Set the boot disk
 	call disk_load				;Now load from disk
 	ret

@@ -46,6 +46,7 @@ void vga_put_char_pos(uint8_t x, uint8_t y, uint8_t character){
 
 void vga_put_char(uint8_t character){
 	if (character == '\n'){
+		vga_put_char_pos(vga_cursor_x, vga_cursor_y, ' ');
 		vga_cursor_y++;
 		vga_cursor_x = 0;
 		return;
@@ -71,6 +72,7 @@ void vga_put_string(const char* string){
 	uint16_t string_pos = 0;
 	for(; string[string_pos]; string_pos++){
 		if (string[string_pos] == '\n'){
+			vga_put_char_pos(vga_cursor_x, vga_cursor_y, ' ');
 			vga_cursor_y++;
 			vga_cursor_x = 0;
 			continue;

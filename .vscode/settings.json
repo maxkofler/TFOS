@@ -5,7 +5,10 @@
         "tty.h": "c",
         "idt_gate.h": "c",
         "*.tcc": "cpp",
-        "cmath": "c"
+        "cmath": "c",
+        "array": "cpp",
+        "string": "cpp",
+        "string_view": "cpp"
     },
     "C_Cpp.errorSquiggles": "Disabled"
 }

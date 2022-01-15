@@ -1,7 +1,6 @@
-#include "registers.h"
-#include "terminal.h"
+#include "kernel/registers.h"
 
-extern Terminal::Terminal kernelTTY;
+#include "kernel/vga.h"
 
 const char *cpu_exception_message[] = {
 	"Division by zero",
@@ -23,13 +22,10 @@ const char *cpu_exception_message[] = {
 	"Coprocessor error"
 };
 
-extern "C" void isr_handler(registers_t* r){
-	kernelTTY.print("Trapped an interrupt: ");
-	kernelTTY.print(cpu_exception_message[2][0]);
-	kernelTTY.print(cpu_exception_message[2][1]);
-	kernelTTY.print(", ");
-	kernelTTY.print((char)(r->int_no+'0'));
-	kernelTTY.print("\n");
+void isr_handler(registers_t* r){
+	vga_put_string("Trapped interrupt: ");
+	vga_put_string(cpu_exception_message[r->int_no]);
+	vga_put_char('\n');
 
 	for (int i = 0; i < 100000000; i++);
 }

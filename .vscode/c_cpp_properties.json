@@ -3,7 +3,6 @@
         {
             "name": "Linux",
             "includePath": [
-                "${workspaceFolder}/**",
                 "${workspaceFolder}/kernel/include/**"
             ],
             "configurationProvider": "ms-vscode.cmake-tools",

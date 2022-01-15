@@ -1,4 +1,4 @@
-#include "interrupts/idt_gate.h"
+#include "kernel/interrupts/idt_gate.h"
 
 #define low_16(addr) (uint16_t)((addr) & 0xFFFF)
 #define high_16(addr) (uint16_t)(((addr) >> 16) & 0xFFFF)

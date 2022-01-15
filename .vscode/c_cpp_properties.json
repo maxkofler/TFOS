@@ -6,7 +6,13 @@
                 "${workspaceFolder}/**",
                 "${workspaceFolder}/kernel/include/**"
             ],
-            "configurationProvider": "ms-vscode.cmake-tools"
+            "configurationProvider": "ms-vscode.cmake-tools",
+            "compilerPath": "/usr/bin/aarch64-linux-gnu-gcc",
+            "compilerArgs": [
+                "-m32"
+            ],
+            "cStandard": "c11",
+            "cppStandard": "c++17"
         }
     ],
     "version": 4

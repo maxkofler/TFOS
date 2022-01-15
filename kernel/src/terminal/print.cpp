@@ -39,4 +39,24 @@ namespace Terminal{
         this->_vga->_cursor_offset = this->_cursor_pos;
         this->_vga->updateCursor();
     }
+
+    void Terminal::print(char *msg, uint32_t len){
+        for (uint32_t i = 0; i < len; i++){
+            switch(msg[i]){
+
+                //Handle newline caracter by setting the cursor to the next line
+                case '\n':{
+                    uint16_t width = this->_vga->_width;
+                    this->_cursor_pos += (width - (this->_cursor_pos % width));
+                    break;
+                }
+
+                //Print default caracters
+                default:{
+                    *((uint16_t*) this->_vga->_buffer + this->_cursor_pos) = (uint16_t) msg[i] | (uint16_t) this->_vga->_col << 8;
+                    this->_cursor_pos++;
+                }
+            }
+        }
+    }
 }

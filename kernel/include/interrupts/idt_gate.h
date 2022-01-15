@@ -3,6 +3,8 @@
 
 #include <stdint.h>
 
+#define IDTS_REGISTERED 32
+
 typedef struct {
 	uint16_t	low_offset;
 	uint16_t	selector;

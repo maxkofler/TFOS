@@ -23,7 +23,7 @@ extern "C" void kernel_main(){
 	isr_install();
 
 	kernelTTY.print("Enabling external interrupts\n");
-	//asm volatile("sti");
+	asm volatile("sti");
 
     kernelTTY.print("No warranty is provided, use this at your own risk!\n");
     kernelTTY.print(">");
@@ -32,7 +32,7 @@ extern "C" void kernel_main(){
     //asm volatile("int 3");
     for (int i = 0; i < 10000000; i++);
     
-    int nul = 0 / 0;
+    //int nul = 0 / 0;
     //asm volatile ("1: jmp 1b");
 
     while(1);

@@ -1,6 +1,8 @@
 #ifndef __TERMINAL_H__
 #define __TERMINAL_H__
 
+#include <stdint.h>
+
 namespace Terminal{
     class Terminal;
 }
@@ -38,6 +40,15 @@ namespace Terminal{
 		 * @note	Wraps the cursor to the next line at line end or if a newline is submitted
 		 */
 		void					print(const char *msg);
+
+		/**
+		 * @brief	Prints a string from the current cursor position on
+		 * @details	Wraps the cursor around
+		 * @param	msg			The string to print
+		 * @param	len			The amount of characters to print
+		 * @note	Wraps the cursor to the next line at line end or if a newline is submitted
+		 */
+		void					print(char *msg, uint32_t len);
 
 		/**
 		 * @brief	Repositiones the text mode cursor of the vga module if enabled

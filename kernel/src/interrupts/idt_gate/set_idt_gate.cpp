@@ -4,7 +4,7 @@
 #define high_16(addr) (uint16_t)(((addr) >> 16) & 0xFFFF)
 
 
-idt_gate_t idt[256];
+idt_gate_t idt[IDTS_REGISTERED];
 
 void set_idt_gate(int n, uint32_t handler){
 	idt[n].low_offset = low_16(handler);

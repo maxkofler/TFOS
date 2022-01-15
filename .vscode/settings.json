@@ -3,6 +3,9 @@
     "files.associations": {
         "vga.h": "c",
         "tty.h": "c",
-        "idt_gate.h": "c"
-    }
+        "idt_gate.h": "c",
+        "*.tcc": "cpp",
+        "cmath": "c"
+    },
+    "C_Cpp.errorSquiggles": "Disabled"
 }

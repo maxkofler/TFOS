@@ -26,6 +26,8 @@ run: all
 show:
 	@echo $(C_SOURCES) ${CXX_SOURCES}
 
+TFOS: builddir ${OUTPUT}
+
 ${OUTPUT}: bootloader.bin ${KERNEL}
 	cat $^ > $@
 

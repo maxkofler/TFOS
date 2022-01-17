@@ -1,12 +1,14 @@
 
 CC = x86_64-elf-gcc
-CC_FLAGS = -m32 -ffreestanding -nostdlib -Wall -Wextra -Ikernel/include
+CC_FLAGS = -g -m32 -ffreestanding -nostdlib -Wall -Wextra -Ikernel/include
 CXX = x86_64-elf-g++
-CXX_FLAGS = -m32 -ffreestanding -nostdlib -Wall -Wextra -Ikernel/include
+CXX_FLAGS = -g -m32 -ffreestanding -nostdlib -Wall -Wextra -Ikernel/include
 LD = x86_64-elf-ld
 LD_FLAGS = 
+OBJCOPY = x86_64-elf-objcopy
 
 OUTPUT = TFOS.bin
+SYMBOLS = TFOS.sym
 KERNEL = kernel.bin
 
 C_SOURCES = $(shell find kernel/src/ -type f -name '**.c')
@@ -23,6 +25,9 @@ all: builddir ${OUTPUT} clean_dev
 run: all
 	qemu-system-i386 -fda TFOS.bin
 
+debug_run: ${SYMBOLS} all 
+	qemu-system-i386 -s -S -fda TFOS.bin
+
 show:
 	@echo $(C_SOURCES) ${CXX_SOURCES}
 
@@ -34,6 +39,13 @@ ${OUTPUT}: bootloader.bin ${KERNEL}
 ${KERNEL}: build/kernel_entry.o ${C_OBJECTS} ${CXX_OBJECTS} ${NASM_OBJECTS}
 	@echo "LD: $^"
 	@${LD} -m elf_i386 ${LD_FLAGS} -o $@ -Ttext 0x1000 $^ --oformat binary
+
+${SYMBOLS}: ${C_OBJECTS} ${CXX_OBJECTS} ${NASM_OBJECTS}
+	@echo "SYM: $^"
+	@${LD} -m elf_i386 ${LD_FLAGS} -o $@ -Ttext 0x1000 $^ --oformat elf32-i386
+	@mv ${SYMBOLS} ${SYMBOLS}.elf
+	@${OBJCOPY} ${SYMBOLS}.elf ${SYMBOLS}
+	@rm ${SYMBOLS}.elf
 
 build/kernel_entry.o: kernel/kernel_entry.asm
 	nasm $< -f elf -o $@

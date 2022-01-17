@@ -3,15 +3,8 @@
         {
             "name": "Linux",
             "includePath": [
-                "${workspaceFolder}/kernel/include/**"
-            ],
-            "configurationProvider": "ms-vscode.cmake-tools",
-            "compilerPath": "/usr/bin/aarch64-linux-gnu-gcc",
-            "compilerArgs": [
-                "-m32"
-            ],
-            "cStandard": "c11",
-            "cppStandard": "c++17"
+                "${workspaceFolder}/kernel/include/*"
+            ]
         }
     ],
     "version": 4

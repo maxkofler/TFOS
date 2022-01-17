@@ -15,9 +15,9 @@ void kernel_main(void){
 
 	vga_put_string("Welcome to TFOS! No warranty is provided!\n>>>");
 
-	isr_install();
+	kernel_setup_interrupts();
 
-	asm("int $3");
+	asm("int $9");
 
 	for (uint8_t i = 0; i < 11; i++){
 		for(uint32_t n = 0; n < 0xFFFFFFF; n++);

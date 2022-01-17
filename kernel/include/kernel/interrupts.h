@@ -1,6 +1,13 @@
 #ifndef __INTERRUPTS_H__
 #define __INTERRUPTS_H__
 
-void isr_install(void);
+#include <stdint.h>
+
+#define IDTS_REGISTERED 32
+
+/**
+ * @brief	Initializes interrupts, remaps the PIC and sets up irqs TODO: irqs
+ */
+void kernel_setup_interrupts(void);
 
 #endif

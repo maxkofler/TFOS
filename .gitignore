@@ -4,3 +4,5 @@ iso/
 *.o
 *.log
 *.bin
+*.elf
+*.sym

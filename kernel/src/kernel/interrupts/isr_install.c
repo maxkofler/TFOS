@@ -1,39 +1,7 @@
-#include "kernel/interrupts/idt_gate.h"
+#include "kernel/interrupts.h"
+#include "kernel/interrupts/isrs.h"
 
-void isr0(void);
-void isr1(void);
-void isr2(void);
-void isr3(void);
-void isr4(void);
-void isr5(void);
-void isr6(void);
-void isr7(void);
-void isr8(void);
-void isr9(void);
-void isr10(void);
-void isr11(void);
-void isr12(void);
-void isr13(void);
-void isr14(void);
-void isr15(void);
-void isr16(void);
-void isr17(void);
-void isr18(void);
-void isr19(void);
-void isr20(void);
-void isr21(void);
-void isr22(void);
-void isr23(void);
-void isr24(void);
-void isr25(void);
-void isr26(void);
-void isr27(void);
-void isr28(void);
-void isr29(void);
-void isr30(void);
-void isr31(void);
-
-extern void load_idt();
+void set_idt_gate(int n, uint32_t handler);
 
 void isr_install(){
 	set_idt_gate(0, (uint32_t) isr0);
@@ -68,28 +36,4 @@ void isr_install(){
 	set_idt_gate(29, (uint32_t) isr29);
 	set_idt_gate(30, (uint32_t) isr30);
 	set_idt_gate(31, (uint32_t) isr31);
-
-	load_idt();
 }
-
-/*
-0 Divide error
-1 Debug exceptions
-2 Nonmaskable interrupt
-3 Breakpoint (one-byte INT 3 instruction)
-4 Overflow (INTO instruction)
-5 Bounds check (BOUND instruction)
-6 Invalid opcode
-7 Coprocessor not available
-8 Double fault
-9 (reserved)
-10 Invalid TSS
-11 Segment not present
-12 Stack exception
-13 General protection
-14 Page fault
-15 (reserved)
-16 Coprecessor error
-17-31 (reserved)
-32-255 Available for external interrupts via INTR pin
-*/

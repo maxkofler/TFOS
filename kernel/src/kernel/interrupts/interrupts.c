@@ -129,8 +129,6 @@ void isr_handler(registers_t* r){
 }
 
 void irq_handler(registers_t* r){
-	asm volatile("cli");
-
 	//Call the interrupt handler
 	if (interrupt_handlers[r->int_no] != 0){
 		isr_t handler = interrupt_handlers[r->int_no];

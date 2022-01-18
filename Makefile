@@ -23,10 +23,10 @@ NASM_OBJECTS = $(patsubst %.asm, %.asm.o, ${NASM_SOURCES})
 all: builddir ${OUTPUT} clean_dev
 
 run: all
-	qemu-system-i386 -fda TFOS.bin
+	qemu-system-i386 -drive file=TFOS.bin,format=raw,media=disk
 
 debug_run: ${SYMBOLS} all 
-	bash -c "qemu-system-i386 -s -S -fda TFOS.bin& < /dev/null"
+	bash -c "qemu-system-i386 -s -S -drive file=TFOS.bin,format=raw,media=disk& < /dev/null"
 
 show:
 	@echo $(C_SOURCES) ${CXX_SOURCES}

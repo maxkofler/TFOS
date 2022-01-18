@@ -1,8 +1,8 @@
 
 CC = x86_64-elf-gcc
-CC_FLAGS = -g -m32 -ffreestanding -nostdlib -Wall -Wextra -Ikernel/include
+CC_FLAGS = -g -m32 -ffreestanding -nostdlib -Wall -Wextra -Ikernel/include -Ikenrel/include/libc
 CXX = x86_64-elf-g++
-CXX_FLAGS = -g -m32 -ffreestanding -nostdlib -Wall -Wextra -Ikernel/include
+CXX_FLAGS = -g -m32 -ffreestanding -nostdlib -Wall -Wextra -Ikernel/include -Ikernel//include/libc
 LD = x86_64-elf-ld
 LD_FLAGS = 
 OBJCOPY = x86_64-elf-objcopy

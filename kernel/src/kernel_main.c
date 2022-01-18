@@ -3,6 +3,7 @@
 #include "kernel/interrupts.h"
 
 #include "kernel/io.h"
+#include "kernel/kernel.h"
 
 void keyboard_handler(registers_t *);
 void timer_handler(registers_t *);
@@ -41,9 +42,6 @@ void timer_handler(registers_t *){
 }
 
 void keyboard_handler(registers_t *){	
-	char c = inb(0x60);
-	vga_put_string("Keycode: \"");
-	vga_put_char(c);
-	vga_put_string("\"\n");
-
+	uint8_t c = inb(0x60);
+	printk("Received key code: %i, %s\n", c, "Hello!");
 }

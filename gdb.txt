@@ -1,0 +1,2 @@
+#Connects GDB to QEMU automatically
+target remote localhost:1234

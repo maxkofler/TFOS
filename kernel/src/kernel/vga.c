@@ -1,5 +1,6 @@
 #include "kernel/vga.h"
 #include "kernel/io.h"
+#include "kernel/memory.h"
 
 uint16_t VGA_WIDTH = 80;
 uint16_t VGA_HEIGHT = 25;
@@ -30,6 +31,24 @@ void vga_setup(){
 	vga_cur_pos = 0;
 }
 
+void vga_new_line(void){
+	vga_put_char_pos(vga_cursor_x, vga_cursor_y, ' ');
+	vga_cursor_y++;
+	vga_cursor_x = 0;
+
+	while (vga_cursor_y >= VGA_HEIGHT){
+		memcpy(
+			(uint8_t*)(VGA_BASE_ADDRESS + (VGA_WIDTH*8)),
+			(uint8_t*)(VGA_BASE_ADDRESS),
+			VGA_WIDTH * ((VGA_HEIGHT-1)*8)
+		);
+		vga_cursor_y--;
+	}
+
+	for(uint16_t i = 0; i < VGA_WIDTH; i++)
+		vga_put_char_pos(i, VGA_HEIGHT-1, ' ');
+}
+
 /**
  * @brief	Puts the supplied character to a certain position in memory
  * @param	x			The x position to put the char to
@@ -46,9 +65,7 @@ void vga_put_char_pos(uint8_t x, uint8_t y, uint8_t character){
 
 void vga_put_char(uint8_t character){
 	if (character == '\n'){
-		vga_put_char_pos(vga_cursor_x, vga_cursor_y, ' ');
-		vga_cursor_y++;
-		vga_cursor_x = 0;
+		vga_new_line();
 		return;
 	}
 
@@ -72,9 +89,7 @@ void vga_put_string(const char* string){
 	uint16_t string_pos = 0;
 	for(; string[string_pos]; string_pos++){
 		if (string[string_pos] == '\n'){
-			vga_put_char_pos(vga_cursor_x, vga_cursor_y, ' ');
-			vga_cursor_y++;
-			vga_cursor_x = 0;
+			vga_new_line();
 			continue;
 		}
 

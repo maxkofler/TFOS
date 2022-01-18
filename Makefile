@@ -26,7 +26,7 @@ run: all
 	qemu-system-i386 -fda TFOS.bin
 
 debug_run: ${SYMBOLS} all 
-	qemu-system-i386 -s -S -fda TFOS.bin
+	bash -c "qemu-system-i386 -s -S -fda TFOS.bin& < /dev/null"
 
 show:
 	@echo $(C_SOURCES) ${CXX_SOURCES}

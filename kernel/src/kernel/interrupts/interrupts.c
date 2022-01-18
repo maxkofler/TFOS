@@ -2,6 +2,9 @@
 #include "kernel/registers.h"		//CPU register struct (registers_t)
 #include "kernel/utility.h"			//low_16(), high_16()
 
+#include "hardcodes/interrupts.h"	//Ports for the PICs
+#include "kernel/io.h"
+
 /** TODO: replace with vga_put_string() with better */
 #include "kernel/vga.h"
 
@@ -34,6 +37,11 @@ typedef struct {
 
 //The register to load using load_idt()
 idt_register_t idt_reg;
+
+//A table that holds pointers to the interrupt service routines.
+//These can be changed at run time and can go to own code
+typedef void (*isr_t)(registers_t *);
+isr_t interrupt_handlers[IDTS_REGISTERED];
 
 /**
  * @brief	Sets an IDT gate up in memory (This sets up the pointer to the interrupt handler written in assembly)
@@ -84,6 +92,31 @@ void load_idt(){
 }
 
 /**
+ * @brief	Remaps the PIC (programmable interrupt controller)
+ */
+void remap_pic(void){
+	//Put the PICs into remapping mode
+	outb(PIC1_COMM, PIC_ICW1);
+	outb(PIC2_COMM, PIC_ICW1);
+
+	//Set the IDT offset (ICW2)
+	outb(PIC1_DATA, PIC1_IDT_OFFSET);
+	outb(PIC2_DATA, PIC2_IDT_OFFSET);
+
+	//Set up wiring between PICs (ICW3)
+	outb(PIC1_DATA, PIC1_ICW3);
+	outb(PIC2_DATA, PIC2_ICW3);
+
+	//Put both PICs int 8086 mode
+	outb(PIC1_DATA, PIC_MODE);
+	outb(PIC2_DATA, PIC_MODE);
+
+	//Finish the setup
+	outb(PIC1_DATA, 0x00);
+	outb(PIC2_DATA, 0x00);
+}
+
+/**
  * @brief	For now this is our interrupt handler, it just prints the message of the exception
  * @param	r				The registers of the CPU
  */
@@ -95,12 +128,36 @@ void isr_handler(registers_t* r){
 	for (int i = 0; i < 100000000; i++);
 }
 
+void irq_handler(registers_t* r){
+	asm volatile("cli");
+
+	//Call the interrupt handler
+	if (interrupt_handlers[r->int_no] != 0){
+		isr_t handler = interrupt_handlers[r->int_no];
+		handler(r);
+	}
+
+	//Tell the PICs that the interrupt has finished
+	outb(PIC1_COMM, 0x20);
+	if (r->int_no > 40)
+		outb(PIC2_COMM, 0x20);
+}
+
 /**
  * @brief	Function for wrapping all the functionality on top
  * 			This function initializes the OSes interrupt mechanism
  * 			and registers all implemented interrupts
  */
 void kernel_setup_interrupts(void){
+	//First of all remap the PICs for external interrupts
+	remap_pic();
 	isr_install();
 	load_idt();
+}
+
+void register_int_handler(uint8_t num, void (*handler)(registers_t*)){
+	if (num >= IDTS_REGISTERED)
+		return;
+
+	interrupt_handlers[num] = handler;
 }

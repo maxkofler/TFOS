@@ -7,8 +7,8 @@ LD = x86_64-elf-ld
 LD_FLAGS = 
 OBJCOPY = x86_64-elf-objcopy
 
-OUTPUT = TFOS.bin
-SYMBOLS = TFOS.sym
+OUTPUT = MONNOS.bin
+SYMBOLS = MONNOS.sym
 KERNEL = kernel.bin
 
 C_SOURCES = $(shell find kernel/src/ -type f -name '**.c')
@@ -23,7 +23,7 @@ NASM_OBJECTS = $(patsubst %.asm, %.asm.o, ${NASM_SOURCES})
 all: builddir ${OUTPUT} clean_dev
 
 run: all
-	qemu-system-i386 -drive file=TFOS.bin,format=raw,media=disk
+	qemu-system-i386 -drive file=${OUTPUT},format=raw,media=disk
 
 debug_run: ${SYMBOLS} all 
 	bash -c "qemu-system-i386 -s -S -drive file=TFOS.bin,format=raw,media=disk& < /dev/null"

@@ -10,7 +10,10 @@
         "string": "cpp",
         "string_view": "cpp",
         "isrs.h": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "monnos.h": "c",
+        "io.h": "c",
+        "string.h": "c"
     },
     "C_Cpp.errorSquiggles": "Disabled"
 }

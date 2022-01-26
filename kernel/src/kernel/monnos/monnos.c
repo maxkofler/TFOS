@@ -1,4 +1,4 @@
-#include "kernel/kernel.h"
+#include "kernel/monnos.h"
 #include "kernel/vga.h"
 #include "kernel/string.h"
 
@@ -29,11 +29,17 @@ uint32_t printk(const char* format, ...){
 				break;
 
 			switch(d){
+			case 'c':
+				vga_put_char(va_arg(args, int));							break;
+
 			case 's':
 				vga_put_string(va_arg(args, const char*));					break;
 
 			case 'i':
 				vga_put_string(itoa(va_arg(args, int), buffer, 10));		break;
+
+			case 'x':
+				vga_put_string(itoa(va_arg(args, int), buffer, 16));		break;
 
 			default:
 				vga_put_char('?');

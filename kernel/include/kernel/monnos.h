@@ -1,5 +1,5 @@
-#ifndef __KERNEL_H__
-#define __KERNEL_H__
+#ifndef __MONNOS_H__
+#define __MONNOS_H__
 
 #include <stdint.h>
 
@@ -11,6 +11,7 @@
  * @note	Supported formats:
  * 							%s	Prints an argument as string
  * 							%i	Prints an argument as integer
+ * 							%x	Prints an integer as hexadecimal string
  */
 uint32_t printk(const char* format, ...);
 

@@ -66,6 +66,7 @@ void vga_put_char_pos(uint8_t x, uint8_t y, uint8_t character){
 void vga_put_char(uint8_t character){
 	if (character == '\n'){
 		vga_new_line();
+		vga_put_char_pos(vga_cursor_x, vga_cursor_y, '_');
 		return;
 	}
 

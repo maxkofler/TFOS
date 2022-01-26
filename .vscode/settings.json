@@ -13,7 +13,8 @@
         "stdio.h": "c",
         "monnos.h": "c",
         "io.h": "c",
-        "string.h": "c"
+        "string.h": "c",
+        "keyboard.h": "c"
     },
     "C_Cpp.errorSquiggles": "Disabled"
 }

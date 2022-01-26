@@ -24,6 +24,8 @@ void kernel_main(void){
 
 	printk("MONNOS, press ESC to quit\n\n");
 
+	load_keymap(LAYOUT_DE);
+
 	kernel_setup_interrupts();
 
 	register_int_handler(33, callback_key_event);

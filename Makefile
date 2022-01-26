@@ -26,12 +26,12 @@ run: all
 	qemu-system-i386 -drive file=${OUTPUT},format=raw,media=disk
 
 debug_run: ${SYMBOLS} all 
-	bash -c "qemu-system-i386 -s -S -drive file=TFOS.bin,format=raw,media=disk& < /dev/null"
+	bash -c "qemu-system-i386 -s -S -drive file=${OUTPUT},format=raw,media=disk& < /dev/null"
 
 show:
 	@echo $(C_SOURCES) ${CXX_SOURCES}
 
-TFOS: builddir ${OUTPUT}
+MONNOS: builddir ${OUTPUT}
 
 ${OUTPUT}: bootloader.bin ${KERNEL}
 	cat $^ > $@
@@ -69,7 +69,7 @@ builddir:
 	@-mkdir build/
 
 clean: clean_dev
-	@-rm -rf ${OUTPUT}
+	@-rm -rf ${OUTPUT} ${SYMBOLS}
 
 clean_dev:
 	@-rm -rf ${C_OBJECTS} ${CXX_OBJECTS} ${NASM_OBJECTS} ${KERNEL} bootloader.bin build/

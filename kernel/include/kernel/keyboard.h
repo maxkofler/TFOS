@@ -1,6 +1,16 @@
 #ifndef __KEYBOARD_H__
 #define __KEYBOARD_H__
 
+//////////
+//	Debugging options (uncomment to enable)
+
+//#define DEBUG_PRINT_SCANCODES
+//#define DEBUG_PRINT_SPECIAL_CHAR_CODES
+//#define DEBUG_PRINT_CAPSLOCK_STATE
+
+//
+//////////
+
 #include <stdint.h>
 
 #include "kernel/registers.h"
@@ -16,6 +26,9 @@
 #define BIT_MOD_SUPER		8
 
 extern uint16_t* keymap;
+extern uint16_t* keymap_default;
+extern uint16_t* keymap_shift;
+extern void (*special_char_callback)(uint16_t character);
 
 typedef struct {
 	//The state of the key with its modifiers
@@ -37,7 +50,24 @@ enum keyboard_layout{
  */
 void load_keymap(enum keyboard_layout layout);
 
-void callback_key_event(registers_t*);
+/**
+ * @brief	A handler to process key events, DO NOT CALL THIS OUTSIDE INTERRUPTS
+ * @note	This is ment to get called from an interrupt because it reads from the keyboard
+ * 			directly
+ */
+void key_event(registers_t*);
+
+/**
+ * @brief	A handler to handle common, non overridden special characters 
+ * @param	c			The special character to handle
+ */
+void common_special_char_callback(uint16_t c);
+
+/**
+ * @brief	Processes the supplied keycode (this can be called everywhere)
+ * @param	keycode		The keycode to process
+ */
+void process_keycode(uint8_t keycode);
 
 #define KEYS_SPECIAL	0x0100
 

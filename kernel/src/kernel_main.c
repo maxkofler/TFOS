@@ -22,13 +22,18 @@ void timer_handler(registers_t *);
 void kernel_main(void){
 	vga_setup();
 
+	printk("Character test:\n-----\n");
+	for (uint8_t i = 0; i < UINT8_MAX; i++)
+		printk("%c", i);
+	printk("\n-----\n");
+
 	printk("MONNOS, press ESC to quit\n\n");
 
 	load_keymap(LAYOUT_DE);
 
 	kernel_setup_interrupts();
 
-	register_int_handler(33, callback_key_event);
+	register_int_handler(33, key_event);
 
 	//Give control to the interrupts
 	asm volatile("sti");

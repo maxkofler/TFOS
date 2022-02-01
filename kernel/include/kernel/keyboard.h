@@ -3,11 +3,13 @@
 
 //////////
 //	Debugging options (uncomment to enable)
-
-//#define DEBUG_PRINT_SCANCODES
-//#define DEBUG_PRINT_SPECIAL_CHAR_CODES
-//#define DEBUG_PRINT_CAPSLOCK_STATE
-
+/*
+#define DEBUG_PRINT_SCANCODES
+#define DEBUG_PRINT_RELEASES
+#define DEBUG_PRINT_SPECIAL_CHAR_CODES
+#define DEBUG_PRINT_CAPSLOCK_STATE
+#define DEBUG_PRINT_SHIFT_STATE
+*/
 //
 //////////
 
@@ -15,15 +17,7 @@
 
 #include "kernel/registers.h"
 
-#define BIT_PRESSED			0
-#define BIT_MOD_L_SHIFT 	1
-#define BIT_MOD_R_SHIFT 	2
-#define BIT_MOD_CAPS 		3
-#define BIT_MOD_L_CTRL 		4
-#define BIT_MOD_R_CTRL 		5
-#define BIT_MOD_ALT			6
-#define BIT_MOD_ALT_GR		7
-#define BIT_MOD_SUPER		8
+#define BIT_PRESSED			15
 
 extern uint16_t* keymap;
 extern uint16_t* keymap_default;

@@ -11,6 +11,8 @@ uint16_t* keymap_default = keymap_us;
 uint16_t* keymap_shift = keymap_us_shift;
 void (*special_char_callback)(uint16_t character);
 
+void char_callback(uint16_t c);
+
 /**
  * @brief	Loads the specified keyboard layout into the driver
  * @param	layout		The new layout to use
@@ -58,14 +60,27 @@ void key_event(registers_t *){
  */
 void process_keycode(uint8_t keycode){
 	#ifdef DEBUG_PRINT_SCANCODES
-	printk("Scancode: 0x%x (%i)\n", c, c);
+	printk("Scancode: 0x%x (%i)\n", keycode, keycode);
 	#endif
 
-	if (keycode > 89)
-		return;
+	uint16_t mask_pressed = 0;
+
+	if (keycode >= 0x80){
+		#ifdef DEBUG_PRINT_RELEASES
+		printk("Released key, shifting scancode 0x%x down by 0x80\n", keycode);
+		#endif
+		keycode -= 0x80;
+		mask_pressed = (1 << BIT_PRESSED);
+		#ifdef DEBUG_PRINT_SCANCODES
+		printk("Scancode after key release shifting: 0x%x (%i) = '%c'\n", keycode, keycode, keymap[keycode]);
+		#endif
+	}
 
 	uint16_t character = keymap[keycode];
 
+	character |= mask_pressed;
+
+	//KEYS_SPECIAL is defined BEFORE the first special key, so we can handle it like this
 	if (character > KEYS_SPECIAL){
 		#ifdef DEBUG_PRINT_SPECIAL_CHAR_CODES
 		printk("Special key 0x%x\n", character);
@@ -73,22 +88,33 @@ void process_keycode(uint8_t keycode){
 		special_char_callback(character);
 		return;
 	}
+
+	//Else call a default callback
+	char_callback(character);
 	
 	//TODO: Remove this
-	printk("%c", character);
+	//printk("%c", character);
 }
 
 
 static uint8_t capslock_on = 0;
+static uint8_t shift_on = 0;
 /**
  * @brief	A handler to handle common, non overridden special characters 
  * @param	c			The special character to handle
  */
 void common_special_char_callback(uint16_t c){
-	switch (c){
+	uint16_t c_switch = c;
+
+	if ((c >> BIT_PRESSED) & 1){
+		c_switch -= (1 << BIT_PRESSED);
+	}
+	
+	switch (c_switch){
 		case KEY_ESCAPE:
 			//Poweroff QEMU
 			outw(0x604, 0x2000);
+			printk("Turning off machine!\n");
 			break; //Unnecessary here because the Computer stops, here to mute warnings
 
 		case KEY_CAPS_LCK:
@@ -102,5 +128,39 @@ void common_special_char_callback(uint16_t c){
 			printk("Capslock state: %i\n", capslock_on);
 			#endif
 			break;
+
+		case KEY_SPACE:
+			if (!((c >> BIT_PRESSED) & 1))
+				printk(" ");
+			break;
+
+		case KEY_ENTER:
+			if (!((c >> BIT_PRESSED) & 1))
+				printk("\n");
+			break;
+		
+		case KEY_BACKSPACE:
+			if (!((c >> BIT_PRESSED) & 1))
+				printk("\b \b");
+			break;
+
+		case KEY_L_SHIFT:
+		case KEY_R_SHIFT:
+			shift_on = !((c >> BIT_PRESSED) & 1);
+			if (shift_on)
+				keymap = keymap_shift;
+			else
+				keymap = keymap_default;
+			#ifdef DEBUG_PRINT_SHIFT_STATE
+			printk("Shift state: %i\n", shift_on);
+			#endif
+			break;
 	}
+}
+
+void char_callback(uint16_t c){
+	if (c > 0x80)
+		return;
+
+	printk("%c", c);
 }

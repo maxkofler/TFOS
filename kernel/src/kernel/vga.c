@@ -31,6 +31,7 @@ void vga_setup(){
 	vga_cur_pos = 0;
 }
 
+//Starts a new line, moves the cursor to the begining of the line and to the next line
 void vga_new_line(void){
 	vga_put_char_pos(vga_cursor_x, vga_cursor_y, ' ');
 	vga_cursor_y++;
@@ -70,6 +71,20 @@ void vga_put_char(uint8_t character){
 		return;
 	}
 
+	if (character == '\b'){
+		vga_put_char_pos(vga_cursor_x, vga_cursor_y, ' ');
+		if (vga_cursor_x == 0){
+			if (vga_cursor_y == 0)
+				return;
+			vga_cursor_y--;
+			vga_cursor_x = VGA_WIDTH-1;
+		}else{
+			vga_cursor_x--;
+		}
+		vga_put_char_pos(vga_cursor_x, vga_cursor_y, '_');
+		return;
+	}
+
 	vga_put_char_pos(vga_cursor_x, vga_cursor_y, character);
 
 	vga_cursor_x++;
@@ -91,6 +106,18 @@ void vga_put_string(const char* string){
 	for(; string[string_pos]; string_pos++){
 		if (string[string_pos] == '\n'){
 			vga_new_line();
+			continue;
+		}
+
+		if (string[string_pos] == '\b'){
+			if (vga_cursor_x == 0){
+				if (vga_cursor_y == 0)
+					continue;
+				vga_cursor_y--;
+				vga_cursor_x = VGA_WIDTH-1;
+			}else{
+				vga_cursor_x--;
+			}
 			continue;
 		}
 

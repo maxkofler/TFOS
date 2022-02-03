@@ -1,1 +1,0 @@
-KERNEL_LEN equ 25

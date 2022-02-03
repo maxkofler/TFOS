@@ -6,3 +6,4 @@ iso/
 *.bin
 *.elf
 *.sym
+bootloader/kernel_len.asm

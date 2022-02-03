@@ -5,6 +5,8 @@
 ;Kernel code starts here
 KERNEL_OFFSET equ 0x1000
 
+KERNEL_LEN equ 20
+
 ;Boot drive is in 'dl' reguster, store it
 mov [BOOT_DRIVE], dl
 
@@ -27,7 +29,7 @@ jmp $
 [bits 16]
 load_kernel:
 	mov bx, KERNEL_OFFSET		;Load the kernel offset
-	mov dh, 0x20				;Load n sectors				TODO: kernel could be larger!
+	mov dh, KERNEL_LEN			;Load n sectors				TODO: kernel could be larger!
 	mov dl, [BOOT_DRIVE]		;Set the boot disk
 	call disk_load				;Now load from disk
 	ret

@@ -8,9 +8,6 @@
 extern uint16_t VGA_WIDTH;
 extern uint16_t VGA_HEIGHT;
 
-//Default color is white on black
-extern const uint8_t vga_cur_col;
-
 //External font
 extern unsigned char vga_8x8_font[];
 
@@ -20,15 +17,6 @@ static inline uint8_t vga_color(enum vga_color fg, enum vga_color bg){
 
 static inline uint16_t vga_entry(uint8_t c, uint8_t color){
 	return (uint16_t) c | (uint16_t) color << 8;
-}
-
-/**
- * @brief	Puts the specified character at the specified position using the color set
- * @param	pos			The offset to put the character to
- * @param	c			The character to put
- */
-static inline void vga_put(uint16_t pos, uint8_t c){
-	*(uint16_t*)(VGA_BASE_ADDRESS + (pos*2)) = vga_entry(c, vga_cur_col);
 }
 
 /**

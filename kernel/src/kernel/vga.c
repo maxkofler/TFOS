@@ -5,8 +5,6 @@
 uint16_t VGA_WIDTH = 80;
 uint16_t VGA_HEIGHT = 25;
 
-const uint8_t vga_cur_col = 0x0F;
-
 static uint16_t vga_cur_pos = 0;
 static uint8_t vga_cursor_x = 0;
 static uint8_t vga_cursor_y = 0;
@@ -64,6 +62,10 @@ void vga_put_char_pos(uint8_t x, uint8_t y, uint8_t character){
 	}
 }
 
+/**
+ * @brief	Puts the supplied character to the cursor position, newlines start a new line
+ * @param	character	The character to put
+ */
 void vga_put_char(uint8_t character){
 	if (character == '\n'){
 		vga_new_line();

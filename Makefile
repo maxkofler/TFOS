@@ -1,4 +1,3 @@
-
 CC = x86_64-elf-gcc
 CC_FLAGS = -g -m32 -ffreestanding -nostdlib -Wall -Wextra -Ikernel/include -Ikenrel/include/libc
 CXX = x86_64-elf-g++
@@ -23,13 +22,13 @@ NASM_OBJECTS = $(patsubst %.asm, %.asm.o, ${NASM_SOURCES})
 all: builddir ${OUTPUT} clean_dev
 
 run: all
-	qemu-system-i386 -drive file=${OUTPUT},format=raw,media=disk
+	qemu-system-i386 -fda ${OUTPUT}
 
-debug_run: ${SYMBOLS} all 
-	bash -c "qemu-system-i386 -s -S -drive file=${OUTPUT},format=raw,media=disk& < /dev/null"
+debug_run: ${SYMBOLS} all
+	bash -c "qemu-system-i386 -s -S -fda ${OUTPUT}&"
 
 show:
-	@echo $(C_SOURCES) ${CXX_SOURCES}
+	@echo ${C_SOURCES} ${CXX_SOURCES} ${NASM_SOURCES}
 
 MONNOS: builddir ${OUTPUT}
 
@@ -38,7 +37,7 @@ ${OUTPUT}: bootloader.bin ${KERNEL}
 
 ${KERNEL}: build/kernel_entry.o ${C_OBJECTS} ${CXX_OBJECTS} ${NASM_OBJECTS}
 	@echo "LD: $^"
-	@${LD} -m elf_i386 ${LD_FLAGS} -o $@ -Ttext 0x1000 $^ --oformat binary
+	@${LD} -T linker.ld -m elf_i386 ${LD_FLAGS} -o $@ -Ttext 0x1000 $^ --oformat binary
 
 ${SYMBOLS}: ${C_OBJECTS} ${CXX_OBJECTS} ${NASM_OBJECTS}
 	@echo "SYM: $^"
@@ -47,8 +46,17 @@ ${SYMBOLS}: ${C_OBJECTS} ${CXX_OBJECTS} ${NASM_OBJECTS}
 	@${OBJCOPY} ${SYMBOLS}.elf ${SYMBOLS}
 	@rm ${SYMBOLS}.elf
 
-build/kernel_entry.o: kernel/kernel_entry.asm
-	nasm $< -f elf -o $@
+build/kernel_entry.o: builddir
+	nasm kernel/kernel_entry.asm -f elf -o build/kernel_entry.o
+
+bootloader.bin: kernel_size
+	nasm bootloader/mbr.asm -f bin -o bootloader.bin
+
+kernel_size: ${KERNEL}
+	./set_kernel_size.sh
+
+builddir:
+	@-mkdir build
 
 %.c.o: %.c
 	@echo "CC: $^"
@@ -61,12 +69,6 @@ build/kernel_entry.o: kernel/kernel_entry.asm
 %.asm.o: %.asm	
 	@echo "NASM: $^"
 	@nasm $^ -f elf -o $@
-
-bootloader.bin: bootloader/mbr.asm
-	nasm $< -f bin -o $@
-
-builddir:
-	@-mkdir build/
 
 clean: clean_dev
 	@-rm -rf ${OUTPUT} ${SYMBOLS}

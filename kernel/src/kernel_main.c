@@ -1,4 +1,6 @@
 
+#include "hardcodes/kernel.h"
+
 #include "kernel/vga.h"
 #include "kernel/interrupts.h"
 
@@ -10,6 +12,8 @@
 
 void keyboard_handler(registers_t *);
 void timer_handler(registers_t *);
+
+uint8_t* _kernel_len = (uint8_t*)KERNEL_LEN_ADDR;
 
 /**
  * @brief	This is the kernel entry point, the kernel never returns,
@@ -27,6 +31,7 @@ void kernel_main(void){
 		printk("%c", i);
 	printk("\n-----\n");
 
+	printk("Kernel length: %i blocks of 512 B, totalling to %i bytes\n", *_kernel_len, *_kernel_len*512);
 	printk("MONNOS, press ESC to quit\n\n");
 
 	load_keymap(LAYOUT_DE);

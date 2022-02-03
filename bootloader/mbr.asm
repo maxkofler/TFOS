@@ -2,11 +2,19 @@
 [bits 16]
 [org 0x7c00]
 
+jmp bootloader_entry
+
+;DO NOT WRITE ANYTHING ABOVE THAT MOVES THIS NUMBER
+global _kernel_len
+_kernel_len:
+db KERNEL_LEN
+
 ;Kernel code starts here
 KERNEL_OFFSET equ 0x1000
 
-KERNEL_LEN equ 20
+%include "bootloader/kernel_len.asm"
 
+bootloader_entry:
 ;Boot drive is in 'dl' reguster, store it
 mov [BOOT_DRIVE], dl
 

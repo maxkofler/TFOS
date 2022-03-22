@@ -3,8 +3,11 @@
 
 #include <stdint.h>
 
+#include "monnos/loglevels.h"
+
 /**
  * @brief	Similar to printf, but runs in kernel space
+ * @param	level			The level of emergency the message has
  * @param	format			Like the format string of printf
  * @param	...				Arguments
  * @return	uint32_t		The amount of characters printed, excluding the nullterminator

@@ -27,13 +27,15 @@ uint8_t* _kernel_len = (uint8_t*)KERNEL_LEN_ADDR;
 void kernel_main(void){
 	vga_setup();
 
-	printk("Character test:\n-----\n");
+	loglevel_current = K_L_DEBUG;
+
+	printk(K_INFO "Character test:\n-----\n");
 	for (uint8_t i = 0; i < UINT8_MAX; i++)
 		printk("%c", i);
 	printk("\n-----\n");
 
-	printk("Kernel length: %i blocks of 512 B, totalling to %i bytes\n", *_kernel_len, *_kernel_len*512);
-	printk("MONNOS, press ESC to quit\n\n");
+	printk(K_INFO "Kernel length: %i blocks of 512 B, totalling to %i bytes\n", *_kernel_len, *_kernel_len*512);
+	printk(K_INFO "MONNOS, press ESC to quit\n\n");
 
 	load_keymap(LAYOUT_DE);
 

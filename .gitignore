@@ -7,4 +7,5 @@ iso/
 *.bin
 *.elf
 *.sym
+.DS_Store
 bootloader/kernel_len.asm

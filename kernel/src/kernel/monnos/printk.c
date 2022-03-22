@@ -17,9 +17,27 @@ uint32_t printk(const char* format, ...){
 
 	va_start(args, format);
 
-	uint32_t i;
+	uint32_t i = 0;
+	uint8_t level = K_LEVEL_MAX;
+
+	if (format[i] == *K_LEVEL_HEADER){
+		i++;
+		level = ctoi(format[i]);
+		i++;
+
+		//Only select out loglevels that can not be determined
+		if (level > loglevel_current)
+			return 0;
+	}
+
+	if (level < K_LEVEL_MAX){
+		vga_put_string("[ ");
+		vga_put_string(loglevel_to_str(level));
+		vga_put_string(" ] ");
+	}
+
 	char c, d;
-	for(i = 0; format[i]; i++){
+	for(; format[i]; i++){
 		c = format[i];
 		switch(c){
 		case '%':{

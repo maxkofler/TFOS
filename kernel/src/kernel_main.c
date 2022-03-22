@@ -9,6 +9,7 @@
 #include "kernel/keyboard.h"
 
 #include "kernel/string.h"
+#include "kernel/memory.h"
 
 void keyboard_handler(registers_t *);
 void timer_handler(registers_t *);
@@ -36,8 +37,13 @@ void kernel_main(void){
 
 	load_keymap(LAYOUT_DE);
 
+	//Start the dynamic memory allocation from the end of the kernel memory
+	mem_init_dynamic_memory(KERNEL_LEN_ADDR+1);
+
+	//Setup interrupts
 	kernel_setup_interrupts();
 
+	//Register the keypress handler
 	register_int_handler(33, key_event);
 
 	//Give control to the interrupts

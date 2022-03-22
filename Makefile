@@ -33,10 +33,10 @@ show:
 MONNOS: builddir ${OUTPUT}
 
 ${OUTPUT}: bootloader.bin ${KERNEL}
-	cat $^ > $@
+	@cat $^ > $@
 
 ${KERNEL}: build/kernel_entry.o ${C_OBJECTS} ${CXX_OBJECTS} ${NASM_OBJECTS}
-	@echo "LD: $^"
+	@echo "LD: $@"
 	@${LD} -T linker.ld -m elf_i386 ${LD_FLAGS} -o $@ -Ttext 0x1000 $^ --oformat binary
 
 ${SYMBOLS}: ${C_OBJECTS} ${CXX_OBJECTS} ${NASM_OBJECTS}
@@ -47,13 +47,13 @@ ${SYMBOLS}: ${C_OBJECTS} ${CXX_OBJECTS} ${NASM_OBJECTS}
 	@rm ${SYMBOLS}.elf
 
 build/kernel_entry.o: builddir
-	nasm kernel/kernel_entry.asm -f elf -o build/kernel_entry.o
+	@nasm kernel/kernel_entry.asm -f elf -o build/kernel_entry.o
 
 bootloader.bin: kernel_size
-	nasm bootloader/mbr.asm -f bin -o bootloader.bin
+	@nasm bootloader/mbr.asm -f bin -o bootloader.bin
 
 kernel_size: ${KERNEL}
-	bash ./set_kernel_size.sh
+	@bash ./set_kernel_size.sh
 
 builddir:
 	@-mkdir build

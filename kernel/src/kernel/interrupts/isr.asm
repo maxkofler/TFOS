@@ -173,7 +173,7 @@ isr19:
 	push byte 19
 	jmp isr_common_stub
 
-;20
+;20	System call
 isr20:
 	push byte 0
 	push byte 20

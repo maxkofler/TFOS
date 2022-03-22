@@ -16,6 +16,11 @@ void timer_handler(registers_t *);
 
 uint8_t* _kernel_len = (uint8_t*)KERNEL_LEN_ADDR;
 
+int syscall_handler_check = 0;
+void syscall_handler(registers_t *){
+	syscall_handler_check = 1;
+}
+
 /**
  * @brief	This is the kernel entry point, the kernel never returns,
  * 			hence the loop at the end. The control gets put to events for now, 
@@ -50,6 +55,15 @@ void kernel_main(void){
 
 	//Register the keypress handler
 	register_int_handler(33, key_event);
+
+	register_int_handler(20, syscall_handler);
+	printk(K_INFO "Testing syscall handler...");
+	syscall_handler_check = 0;
+	asm volatile("int $20");
+	if (syscall_handler_check != 0)
+		printk("OK!\n");
+	else
+		printk("Failed!\n");
 
 	//Give control to the interrupts
 	asm volatile("sti");

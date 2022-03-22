@@ -121,11 +121,16 @@ void remap_pic(void){
  * @param	r				The registers of the CPU
  */
 void isr_handler(registers_t* r){
-	vga_put_string("Trapped interrupt: ");
-	vga_put_string(cpu_exception_message[r->int_no]);
-	vga_put_char('\n');
+	uint32_t intNo = r->int_no;
 
-	for (int i = 0; i < 100000000; i++);
+	if (intNo < 17){
+		vga_put_string("Trapped interrupt: ");
+		vga_put_string(cpu_exception_message[r->int_no]);
+		vga_put_char('\n');
+	} else {
+		isr_t handler = interrupt_handlers[r->int_no];
+		handler(r);
+	}
 }
 
 void irq_handler(registers_t* r){

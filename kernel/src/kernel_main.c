@@ -35,9 +35,12 @@ void kernel_main(void){
 	printk("\n-----\n");
 
 	printk(K_INFO "Kernel length: %i blocks of 512 B, totalling to %i bytes\n", *_kernel_len, *_kernel_len*512);
-	printk(K_INFO "MONNOS, press ESC to quit\n\n");
 
+	//Load the german keymap
 	load_keymap(LAYOUT_DE);
+
+	//Print OS information
+	printk("\nMONNOS, press ESC to quit\n\n");
 
 	//Start the dynamic memory allocation from the end of the kernel memory
 	mem_init_dynamic_memory(KERNEL_LEN_ADDR+1);

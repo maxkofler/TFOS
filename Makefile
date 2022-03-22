@@ -53,7 +53,7 @@ bootloader.bin: kernel_size
 	nasm bootloader/mbr.asm -f bin -o bootloader.bin
 
 kernel_size: ${KERNEL}
-	./set_kernel_size.sh
+	bash ./set_kernel_size.sh
 
 builddir:
 	@-mkdir build

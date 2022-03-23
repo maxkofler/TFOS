@@ -6,6 +6,8 @@
 
 #include <stdint.h>
 
+#define LOG_PREFIX "[KBRD ] "
+
 uint16_t* keymap = keymap_us;
 uint16_t* keymap_default = keymap_us;
 uint16_t* keymap_shift = keymap_us_shift;
@@ -20,7 +22,7 @@ void char_callback(uint16_t c);
 void load_keymap(enum keyboard_layout layout){
 	switch (layout){
 		case LAYOUT_US:
-			printk(K_INFO "KEYBOARD: Setting keyboard_layout to \"US\"\n");
+			printk(K_INFO LOG_PREFIX "KEYBOARD: Setting keyboard_layout to \"US\"\n");
 			keymap = keymap_us;
 			keymap_default = keymap_us;
 			keymap_shift = keymap_us_shift;
@@ -28,7 +30,7 @@ void load_keymap(enum keyboard_layout layout){
 			break;
 
 		case LAYOUT_DE:
-			printk(K_INFO "KEYBOARD: Setting keyboard_layout to \"DE\"\n");
+			printk(K_INFO LOG_PREFIX "KEYBOARD: Setting keyboard_layout to \"DE\"\n");
 			keymap = keymap_de;
 			keymap_default = keymap_de;
 			keymap_shift = keymap_de_shift;
@@ -37,7 +39,7 @@ void load_keymap(enum keyboard_layout layout){
 
 		case LAYOUT_DEFAULT:
 		default:
-			printk(K_INFO "KEYBOARD: Defaulting to keyboard layout \"US\"\n");
+			printk(K_INFO LOG_PREFIX "KEYBOARD: Defaulting to keyboard layout \"US\"\n");
 			keymap = keymap_us;
 			special_char_callback = special_char_us;
 	}
@@ -67,12 +69,12 @@ void process_keycode(uint8_t keycode){
 
 	if (keycode >= 0x80){
 		#ifdef DEBUG_PRINT_RELEASES
-		printk(K_DEBUG "Released key, shifting scancode 0x%x down by 0x80\n", keycode);
+		printk(K_DEBUG LOG_PREFIX "Released key, shifting scancode 0x%x down by 0x80\n", keycode);
 		#endif
 		keycode -= 0x80;
 		mask_pressed = (1 << BIT_PRESSED);
 		#ifdef DEBUG_PRINT_SCANCODES
-		printk(K_DEBUG "Scancode after key release shifting: 0x%x (%i) = '%c'\n", keycode, keycode, keymap[keycode]);
+		printk(K_DEBUG LOG_PREFIX "Scancode after key release shifting: 0x%x (%i) = '%c'\n", keycode, keycode, keymap[keycode]);
 		#endif
 	}
 
@@ -83,7 +85,7 @@ void process_keycode(uint8_t keycode){
 	//KEYS_SPECIAL is defined BEFORE the first special key, so we can handle it like this
 	if (character > KEYS_SPECIAL){
 		#ifdef DEBUG_PRINT_SPECIAL_CHAR_CODES
-		printk(K_DEBUG "Special key 0x%x\n", character);
+		printk(K_DEBUG LOG_PREFIX "Special key 0x%x\n", character);
 		#endif
 		special_char_callback(character);
 		return;
@@ -114,7 +116,7 @@ void common_special_char_callback(uint16_t c){
 		case KEY_ESCAPE:
 			//Poweroff QEMU
 			outw(0x604, 0x2000);
-			printk(K_INFO "Turning off machine!\n");
+			printk(K_INFO LOG_PREFIX "Turning off machine!\n");
 			break; //Unnecessary here because the Computer stops, here to mute warnings
 
 		case KEY_CAPS_LCK:
@@ -125,7 +127,7 @@ void common_special_char_callback(uint16_t c){
 			else
 				keymap = keymap_default;
 			#ifdef DEBUG_PRINT_CAPSLOCK_STATE
-			printk(K_DEBUG "Capslock state: %i\n", capslock_on);
+			printk(K_DEBUG LOG_PREFIX "Capslock state: %i\n", capslock_on);
 			#endif
 			break;
 
@@ -152,7 +154,7 @@ void common_special_char_callback(uint16_t c){
 			else
 				keymap = keymap_default;
 			#ifdef DEBUG_PRINT_SHIFT_STATE
-			printk(K_DEBUG "Shift state: %i\n", shift_on);
+			printk(K_DEBUG LOG_PREFIX "Shift state: %i\n", shift_on);
 			#endif
 			break;
 	}

@@ -4,11 +4,11 @@
 uint8_t loglevel_current = 4;
 
 char* level_string[] = {
-	"PANIC",
-	"ERROR",
-	"WARNING",
-	"INFO",
-	"DEBUG"
+	"P",
+	"E",
+	"W",
+	"I",
+	"D"
 };
 
 char* loglevel_to_str(uint8_t level){

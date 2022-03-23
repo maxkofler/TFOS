@@ -12,6 +12,8 @@
 #include "kernel/memory.h"
 #include "kernel/syscall.h"
 
+#define LOG_PREFIX "[KMAIN] "
+
 void keyboard_handler(registers_t *);
 void timer_handler(registers_t *);
 
@@ -30,12 +32,12 @@ void kernel_main(void){
 
 	loglevel_current = K_L_DEBUG;
 
-	printk(K_INFO "Character test:\n-----\n");
+	printk(K_INFO LOG_PREFIX "Character test:\n-----\n");
 	for (uint8_t i = 0; i < UINT8_MAX; i++)
 		printk("%c", i);
 	printk("\n-----\n");
 
-	printk(K_INFO "Kernel length: %i blocks of 512 B, totalling to %i bytes\n", *_kernel_len, *_kernel_len*512);
+	printk(K_INFO LOG_PREFIX "Kernel length: %i blocks of 512 B, totalling to %i bytes\n", *_kernel_len, *_kernel_len*512);
 
 	//Load the german keymap
 	load_keymap(LAYOUT_DE);
@@ -51,7 +53,7 @@ void kernel_main(void){
 
 	//Initialize the syscall interface on interrupt 20
 	syscall_init(20);
-	printk(K_INFO "Testing the syscall interface...\n");
+	printk(K_INFO LOG_PREFIX "Testing the syscall interface...\n");
 	asm volatile("mov $12345, %eax");
 	asm volatile("int $20");
 

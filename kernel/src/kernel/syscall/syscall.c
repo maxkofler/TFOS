@@ -2,7 +2,7 @@
 #include "kernel/syscall.h"
 #include "kernel/interrupts.h"
 
-#define LOG_PREFIX "[ SYSCALL ] "
+#define LOG_PREFIX "[SCALL] "
 
 void syscall_int_handler(registers_t*);
 

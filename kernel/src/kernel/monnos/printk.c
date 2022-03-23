@@ -31,9 +31,9 @@ uint32_t printk(const char* format, ...){
 	}
 
 	if (level < K_LEVEL_MAX){
-		vga_put_string("[ ");
+		vga_put_string("[");
 		vga_put_string(loglevel_to_str(level));
-		vga_put_string(" ] ");
+		vga_put_string("]");
 	}
 
 	char c, d;

@@ -7,6 +7,8 @@
 
 #include "kernel/monnos.h"
 
+#define LOG_PREFIX "[INT  ] "
+
 //External function to construct the IDT
 //before loading the table using load_idt()
 void isr_install();
@@ -123,7 +125,7 @@ void isr_handler(registers_t* r){
 	uint32_t intNo = r->int_no;
 
 	if (intNo < 17){
-		printk("Trapped an interrupt: %s\n", cpu_exception_message[r->int_no]);
+		printk(K_INFO LOG_PREFIX "Trapped an interrupt: %s\n", cpu_exception_message[r->int_no]);
 	} else {
 		isr_t handler = interrupt_handlers[r->int_no];
 		handler(r);
@@ -159,7 +161,7 @@ void register_int_handler(uint8_t num, void (*handler)(registers_t*)){
 	if (num >= IDTS_REGISTERED)
 		return;
 
-	printk(K_INFO "Installing new handler at 0x%x for interrupt #%i\n", handler, num);
+	printk(K_INFO LOG_PREFIX "Installing new handler at 0x%x for interrupt #%i\n", handler, num);
 
 	interrupt_handlers[num] = handler;
 }

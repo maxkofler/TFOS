@@ -22,7 +22,7 @@ void char_callback(uint16_t c);
 void load_keymap(enum keyboard_layout layout){
 	switch (layout){
 		case LAYOUT_US:
-			printk(K_INFO LOG_PREFIX "KEYBOARD: Setting keyboard_layout to \"US\"\n");
+			printk(K_INFO LOG_PREFIX "Setting keyboard_layout to \"US\"\n");
 			keymap = keymap_us;
 			keymap_default = keymap_us;
 			keymap_shift = keymap_us_shift;
@@ -30,7 +30,7 @@ void load_keymap(enum keyboard_layout layout){
 			break;
 
 		case LAYOUT_DE:
-			printk(K_INFO LOG_PREFIX "KEYBOARD: Setting keyboard_layout to \"DE\"\n");
+			printk(K_INFO LOG_PREFIX "Setting keyboard_layout to \"DE\"\n");
 			keymap = keymap_de;
 			keymap_default = keymap_de;
 			keymap_shift = keymap_de_shift;
@@ -39,7 +39,7 @@ void load_keymap(enum keyboard_layout layout){
 
 		case LAYOUT_DEFAULT:
 		default:
-			printk(K_INFO LOG_PREFIX "KEYBOARD: Defaulting to keyboard layout \"US\"\n");
+			printk(K_INFO LOG_PREFIX "Defaulting to keyboard layout \"US\"\n");
 			keymap = keymap_us;
 			special_char_callback = special_char_us;
 	}
@@ -62,7 +62,7 @@ void key_event(registers_t *){
  */
 void process_keycode(uint8_t keycode){
 	#ifdef DEBUG_PRINT_SCANCODES
-	printk(K_DEBUG "Scancode: 0x%x (%i)\n", keycode, keycode);
+	printk(K_DEBUG LOG_PREFIX "Scancode: 0x%x (%i)\n", keycode, keycode);
 	#endif
 
 	uint16_t mask_pressed = 0;

@@ -10,16 +10,12 @@
 
 #include "kernel/string.h"
 #include "kernel/memory.h"
+#include "kernel/syscall.h"
 
 void keyboard_handler(registers_t *);
 void timer_handler(registers_t *);
 
 uint8_t* _kernel_len = (uint8_t*)KERNEL_LEN_ADDR;
-
-int syscall_handler_check = 0;
-void syscall_handler(registers_t *registers){
-	syscall_handler_check = registers->eax;
-}
 
 /**
  * @brief	This is the kernel entry point, the kernel never returns,
@@ -53,17 +49,11 @@ void kernel_main(void){
 	//Register the keypress handler
 	register_int_handler(33, key_event);
 
-	{	//Check the syscall handler
-		register_int_handler(20, syscall_handler);
-		printk(K_INFO "Testing syscall handler...");
-		syscall_handler_check = 0;
-		asm volatile("mov $12345, %eax");
-		asm volatile("int $20");
-		if (syscall_handler_check == 12345)
-			printk("OK!\n");
-		else
-			printk("Failed!\n");
-	}
+	//Initialize the syscall interface on interrupt 20
+	syscall_init(20);
+	printk(K_INFO "Testing the syscall interface...\n");
+	asm volatile("mov $12345, %eax");
+	asm volatile("int $20");
 
 	//Print OS information
 	printk("\nMONNOS, press ESC to quit\n\n");

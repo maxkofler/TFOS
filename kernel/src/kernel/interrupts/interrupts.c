@@ -5,8 +5,7 @@
 #include "hardcodes/interrupts.h"	//Ports for the PICs
 #include "kernel/io.h"
 
-/** TODO: replace with vga_put_string() with better */
-#include "kernel/vga.h"
+#include "kernel/monnos.h"
 
 //External function to construct the IDT
 //before loading the table using load_idt()
@@ -124,9 +123,7 @@ void isr_handler(registers_t* r){
 	uint32_t intNo = r->int_no;
 
 	if (intNo < 17){
-		vga_put_string("Trapped interrupt: ");
-		vga_put_string(cpu_exception_message[r->int_no]);
-		vga_put_char('\n');
+		printk("Trapped an interrupt: %s\n", cpu_exception_message[r->int_no]);
 	} else {
 		isr_t handler = interrupt_handlers[r->int_no];
 		handler(r);
@@ -161,6 +158,8 @@ void kernel_setup_interrupts(void){
 void register_int_handler(uint8_t num, void (*handler)(registers_t*)){
 	if (num >= IDTS_REGISTERED)
 		return;
+
+	printk(K_INFO "Installing new handler at 0x%x for interrupt #%i\n", handler, num);
 
 	interrupt_handlers[num] = handler;
 }

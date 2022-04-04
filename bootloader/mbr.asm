@@ -9,8 +9,13 @@ global _kernel_len
 _kernel_len:
 db KERNEL_LEN
 
+_kernel_source:
+	KERNEL_LOAD_SOURCE db 0
+
 ;Kernel code starts here
 KERNEL_OFFSET equ 0x1000
+
+
 
 %include "bootloader/kernel_len.asm"
 
@@ -22,8 +27,24 @@ mov [BOOT_DRIVE], dl
 mov bp, 0x9000
 mov sp, bp
 
-;Load kernel into memory
+;Check if the kernel is already loaded from a chainload
+mov ax, [0x9c00]
+cmp ax, 0xf0f0
+;TODO: check if the chainload detection works
+je _kernel_chainloaded
+
+;If there was no chainload, load the kernel
+mov dl, [BOOT_DRIVE]
+mov [_kernel_source], dl
 call load_kernel
+jmp _continue
+
+_kernel_chainloaded:
+	mov byte [_kernel_source], 0xff
+
+_continue:
+
+;Load kernel into memory
 call set_video
 call switch_32_bit
 
@@ -37,9 +58,9 @@ jmp $
 [bits 16]
 load_kernel:
 	mov bx, KERNEL_OFFSET		;Load the kernel offset
-	mov dh, KERNEL_LEN			;Load n sectors				TODO: kernel could be larger!
+	mov dh, KERNEL_LEN			;Load the kernel lenght
 	mov dl, [BOOT_DRIVE]		;Set the boot disk
-	call disk_load				;Now load from disk
+	call disk_load				;Call the subfunction to call the BIOS
 	ret
 
 [bits 16]

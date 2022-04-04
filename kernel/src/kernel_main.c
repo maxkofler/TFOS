@@ -18,6 +18,7 @@ void keyboard_handler(registers_t *);
 void timer_handler(registers_t *);
 
 uint8_t* _kernel_len = (uint8_t*)KERNEL_LEN_ADDR;
+uint8_t* _kernel_load_source = (uint8_t*)KERNEL_LOAD_SOURCE;
 
 /**
  * @brief	This is the kernel entry point, the kernel never returns,
@@ -38,6 +39,13 @@ void kernel_main(void){
 	printk("\n-----\n");
 
 	printk(K_INFO LOG_PREFIX "Kernel length: %i blocks of 512 B, totalling to %i bytes\n", *_kernel_len, *_kernel_len*512);
+
+	//Check if the kernel was chainloaded
+	if (*_kernel_load_source == 0xff){
+		printk(K_INFO LOG_PREFIX "Kernel source: CHAINLOAD\n");
+	} else {
+		printk(K_INFO LOG_PREFIX "Kernel source: fd%i\n", *_kernel_load_source);
+	}
 
 	//Load the german keymap
 	load_keymap(LAYOUT_DE);

@@ -17,6 +17,8 @@
 void keyboard_handler(registers_t *);
 void timer_handler(registers_t *);
 
+void sample_syscall(registers_t *);
+
 uint8_t* _kernel_len = (uint8_t*)KERNEL_LEN_ADDR;
 uint8_t* _kernel_load_source = (uint8_t*)KERNEL_LOAD_SOURCE;
 
@@ -62,7 +64,11 @@ void kernel_main(void){
 	//Initialize the syscall interface on interrupt 20
 	syscall_init(20);
 	printk(K_INFO LOG_PREFIX "Testing the syscall interface...\n");
-	asm volatile("mov $12345, %eax");
+	asm volatile("mov $16, %eax");
+	asm volatile("int $20");
+	syscall_register(0, sample_syscall);
+	syscall_register(MAX_SYSCALLS, sample_syscall);
+	asm volatile("mov $0, %eax");
 	asm volatile("int $20");
 
 	//Print OS information
@@ -76,4 +82,9 @@ void kernel_main(void){
 		asm volatile ("hlt");
 
 	outw(0x604, 0x2000);
+}
+
+void sample_syscall(registers_t* r){
+	printk(K_INFO LOG_PREFIX "Sample syscall got called, id: 0x%x\n", r->eax);
+	return;
 }

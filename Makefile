@@ -7,6 +7,7 @@ LD_FLAGS =
 OBJCOPY = x86_64-elf-objcopy
 
 OUTPUT = MONNOS.bin
+OUTPUT_MULTIBOOT = MONNOS_MULTIBOOT.bin
 SYMBOLS = MONNOS.sym
 KERNEL = kernel.bin
 
@@ -32,6 +33,10 @@ show:
 
 MONNOS: builddir ${OUTPUT}
 
+${OUTPUT_MULTIBOOT}: build/kernel_entry_multiboot.o ${C_OBJECTS} ${CXX_OBJECTS} ${NASM_OBJECTS}
+	@echo "LD: $@"
+	@${LD} -T linker_multiboot.ld -m elf_i386 $(LD_FLAGS) -o $@ $^ --oformat binary
+
 ${OUTPUT}: bootloader.bin ${KERNEL}
 	@cat $^ > $@
 
@@ -49,7 +54,12 @@ ${SYMBOLS}: ${C_OBJECTS} ${CXX_OBJECTS} ${NASM_OBJECTS}
 build/kernel_entry.o: builddir
 	@nasm kernel/kernel_entry.asm -f elf -o build/kernel_entry.o
 
+build/kernel_entry_multiboot.o: builddir
+	@echo "KENTRY: $@"
+	@nasm kernel/kernel_entry_multiboot.asm -f elf -o build/kernel_entry_multiboot.o
+
 bootloader.bin: kernel_size
+	@echo "KENTRY: $@"
 	@nasm bootloader/mbr.asm -f bin -o bootloader.bin
 
 kernel_size: ${KERNEL}

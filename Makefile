@@ -33,7 +33,7 @@ show:
 
 MONNOS: builddir ${OUTPUT}
 
-${OUTPUT_MULTIBOOT}: build/kernel_entry_multiboot.o ${C_OBJECTS} ${CXX_OBJECTS} ${NASM_OBJECTS}
+${OUTPUT_MULTIBOOT}: build/multiboot_header.o build/boot_multiboot.o ${C_OBJECTS} ${CXX_OBJECTS} ${NASM_OBJECTS}
 	@echo "LD: $@"
 	@${LD} -T linker_multiboot.ld -m elf_i386 $(LD_FLAGS) -o $@ $^ --oformat binary
 
@@ -54,9 +54,13 @@ ${SYMBOLS}: ${C_OBJECTS} ${CXX_OBJECTS} ${NASM_OBJECTS}
 build/kernel_entry.o: builddir
 	@nasm kernel/kernel_entry.asm -f elf -o build/kernel_entry.o
 
-build/kernel_entry_multiboot.o: builddir
+build/multiboot_header.o: builddir
+	@echo "MBHEADER: $@"
+	@nasm kernel/multiboot_header.asm -f elf -o build/multiboot_header.o
+
+build/boot_multiboot.o: builddir
 	@echo "KENTRY: $@"
-	@nasm kernel/kernel_entry_multiboot.asm -f elf -o build/kernel_entry_multiboot.o
+	@nasm kernel/boot_multiboot.asm -f elf -o build/boot_multiboot.o
 
 bootloader.bin: kernel_size
 	@echo "KENTRY: $@"

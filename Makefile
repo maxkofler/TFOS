@@ -5,6 +5,7 @@ CXX_FLAGS = -g -m32 -ffreestanding -nostdlib -Wall -Wextra -Ikernel/include -Ike
 LD = x86_64-elf-ld
 LD_FLAGS = 
 OBJCOPY = x86_64-elf-objcopy
+NASM_FLAGS = -Ikernel/
 
 OUTPUT = MONNOS.bin
 OUTPUT_MULTIBOOT = MONNOS_MULTIBOOT.bin
@@ -33,9 +34,9 @@ show:
 
 MONNOS: builddir ${OUTPUT}
 
-${OUTPUT_MULTIBOOT}: build/multiboot_header.o build/boot_multiboot.o ${C_OBJECTS} ${CXX_OBJECTS} ${NASM_OBJECTS}
+${OUTPUT_MULTIBOOT}: build/boot_multiboot.o ${C_OBJECTS} ${CXX_OBJECTS} ${NASM_OBJECTS}
 	@echo "LD: $@"
-	@${LD} -T linker_multiboot.ld -m elf_i386 $(LD_FLAGS) -o $@ $^ --oformat binary
+	@${LD} -T linker_multiboot.ld -m elf_i386 ${LD_FLAGS} -o $@ $^ --oformat binary
 
 ${OUTPUT}: bootloader.bin ${KERNEL}
 	@cat $^ > $@
@@ -56,15 +57,15 @@ build/kernel_entry.o: builddir
 
 build/multiboot_header.o: builddir
 	@echo "MBHEADER: $@"
-	@nasm kernel/multiboot_header.asm -f elf -o build/multiboot_header.o
+	@nasm ${NASM_FLAGS} kernel/multiboot_header.asm -f elf -o build/multiboot_header.o
 
 build/boot_multiboot.o: builddir
 	@echo "KENTRY: $@"
-	@nasm kernel/boot_multiboot.asm -f elf -o build/boot_multiboot.o
+	@nasm ${NASM_FLAGS} kernel/boot_multiboot.asm -f elf -o build/boot_multiboot.o
 
 bootloader.bin: kernel_size
 	@echo "KENTRY: $@"
-	@nasm bootloader/mbr.asm -f bin -o bootloader.bin
+	@nasm ${NASM_FLAGS} bootloader/mbr.asm -f bin -o bootloader.bin
 
 kernel_size: ${KERNEL}
 	@bash ./set_kernel_size.sh

@@ -1,4 +1,4 @@
-global _start
+%include "multiboot_header.asm"
 
 section .text
 bits 32

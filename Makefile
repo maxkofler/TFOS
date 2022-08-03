@@ -1,10 +1,17 @@
-CC = x86_64-elf-gcc
+CC = i686-elf-gcc
 CC_FLAGS = -g -m32 -ffreestanding -nostdlib -Wall -Wextra -Ikernel/include -Ikenrel/include/libc
-CXX = x86_64-elf-g++
+
+CXX = i686-elf-g++
 CXX_FLAGS = -g -m32 -ffreestanding -nostdlib -Wall -Wextra -Ikernel/include -Ikernel//include/libc
-LD = x86_64-elf-ld
+
+LD = i686-elf-ld
 LD_FLAGS = 
-OBJCOPY = x86_64-elf-objcopy
+
+AS = i686-elf-as
+AS_FLAGS =
+
+OBJCOPY = i686-elf-objcopy
+
 NASM_FLAGS = -Ikernel/
 
 OUTPUT = MONNOS.bin
@@ -36,7 +43,7 @@ MONNOS: builddir ${OUTPUT}
 
 ${OUTPUT_MULTIBOOT}: build/boot_multiboot.o ${C_OBJECTS} ${CXX_OBJECTS} ${NASM_OBJECTS}
 	@echo "LD: $@"
-	@${LD} -T linker_multiboot.ld -m elf_i386 ${LD_FLAGS} -o $@ $^ --oformat binary
+	@${LD} -T linker_multiboot.ld ${LD_FLAGS} -o $@ -Ttext 0x1000 $^
 
 ${OUTPUT}: bootloader.bin ${KERNEL}
 	@cat $^ > $@
@@ -60,8 +67,8 @@ build/multiboot_header.o: builddir
 	@nasm ${NASM_FLAGS} kernel/multiboot_header.asm -f elf -o build/multiboot_header.o
 
 build/boot_multiboot.o: builddir
-	@echo "KENTRY: $@"
-	@nasm ${NASM_FLAGS} kernel/boot_multiboot.asm -f elf -o build/boot_multiboot.o
+	@echo "KENTRY GAS: $@"
+	@${AS} ${AS_FLAGS} kernel/boot_multiboot.S -o build/boot_multiboot.o
 
 bootloader.bin: kernel_size
 	@echo "KENTRY: $@"

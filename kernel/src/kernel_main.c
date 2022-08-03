@@ -40,15 +40,6 @@ void kernel_main(void){
 		printk("%c", i);
 	printk("\n-----\n");
 
-	printk(K_INFO LOG_PREFIX "Kernel length: %i blocks of 512 B, totalling to %i bytes\n", *_kernel_len, *_kernel_len*512);
-
-	//Check if the kernel was chainloaded
-	if (*_kernel_load_source == 0xff){
-		printk(K_INFO LOG_PREFIX "Kernel source: CHAINLOAD\n");
-	} else {
-		printk(K_INFO LOG_PREFIX "Kernel source: fd%i\n", *_kernel_load_source);
-	}
-
 	//Load the german keymap
 	load_keymap(LAYOUT_DE);
 
@@ -64,18 +55,24 @@ void kernel_main(void){
 	//Initialize the syscall interface on interrupt 20
 	syscall_init(20);
 	printk(K_INFO LOG_PREFIX "Testing the syscall interface...\n");
-	asm volatile("mov $16, %eax");
-	asm volatile("int $20");
+
+	//Interrupts are currently not working
+	//asm volatile("mov $16, %eax");
+	//asm volatile("int $20");
+
 	syscall_register(0, sample_syscall);
 	syscall_register(MAX_SYSCALLS, sample_syscall);
-	asm volatile("mov $0, %eax");
-	asm volatile("int $20");
+
+	//Interrupts are currently not working
+	//asm volatile("mov $0, %eax");
+	//asm volatile("int $20");
 
 	//Print OS information
 	printk("\nMONNOS, press ESC to quit\n\n");
 
+	//Interrupts are currently not working
 	//Give control to the interrupts
-	asm volatile("sti");
+	//asm volatile("sti");
 
 	//If an interrupt ends, halt the CPU again
 	while (1)

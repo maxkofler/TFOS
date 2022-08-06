@@ -125,7 +125,7 @@ void isr_handler(registers_t* r){
 	uint32_t intNo = r->int_no;
 
 	if (intNo < 17){
-		printk(K_INFO LOG_PREFIX "Trapped an interrupt: %s\n", cpu_exception_message[r->int_no]);
+		printk(K_INFO LOG_PREFIX "Trapped an interrupt at %x: %s\n", r->eip, cpu_exception_message[r->int_no]);
 	} else {
 		isr_t handler = interrupt_handlers[r->int_no];
 		handler(r);
@@ -152,7 +152,7 @@ void irq_handler(registers_t* r){
  */
 void kernel_setup_interrupts(void){
 	//First of all remap the PICs for external interrupts
-	//remap_pic();
+	remap_pic();
 	isr_install();
 	load_idt();
 }

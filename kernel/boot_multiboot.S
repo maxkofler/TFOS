@@ -1,7 +1,8 @@
 /* Declare constants for the multiboot header. */
 .set ALIGN,    1<<0             /* align loaded modules on page boundaries */
 .set MEMINFO,  1<<1             /* provide memory map */
-.set FLAGS,    ALIGN | MEMINFO  /* this is the Multiboot 'flag' field */
+.set VIDEO,	   1<<2				/* include video mode */
+.set FLAGS,    ALIGN | MEMINFO | VIDEO /* this is the Multiboot 'flag' field */
 .set MAGIC,    0x1BADB002       /* 'magic number' lets bootloader find the header */
 .set CHECKSUM, -(MAGIC + FLAGS) /* checksum of above, to prove we are multiboot */
  
@@ -14,9 +15,9 @@ forced to be within the first 8 KiB of the kernel file.
 */
 .section .multiboot
 .align 4
-.long 0x1BADB002
-.long 0x04
-.long -(0x1BADB002 + 0x04)
+.long MAGIC
+.long FLAGS
+.long CHECKSUM
 
  # aout kludge (unused)
 .long 0,0,0,0,0

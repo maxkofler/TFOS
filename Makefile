@@ -28,7 +28,7 @@ CXX_OBJECTS = $(patsubst %.cpp, %.cpp.o, ${CXX_SOURCES})
 NASM_SOURCES = $(shell find kernel/src/ -type f -name '**.asm')
 NASM_OBJECTS = $(patsubst %.asm, %.asm.o, ${NASM_SOURCES})
 
-all: builddir ${OUTPUT} clean_dev
+all: builddir ${OUTPUT_MULTIBOOT} clean_dev
 
 run: all
 	qemu-system-i386 -fda ${OUTPUT}
@@ -50,11 +50,11 @@ ${OUTPUT}: bootloader.bin ${KERNEL}
 
 ${KERNEL}: build/kernel_entry.o ${C_OBJECTS} ${CXX_OBJECTS} ${NASM_OBJECTS}
 	@echo "LD: $@"
-	@${LD} -T linker.ld -m elf_i386 ${LD_FLAGS} -o $@ -Ttext 0x1000 $^ --oformat binary
+	@${LD} -T linker.ld ${LD_FLAGS} -o $@ -Ttext 0x1000 $^ --oformat binary
 
 ${SYMBOLS}: ${C_OBJECTS} ${CXX_OBJECTS} ${NASM_OBJECTS}
 	@echo "SYM: $^"
-	@${LD} -m elf_i386 ${LD_FLAGS} -o $@ -Ttext 0x1000 $^ --oformat elf32-i386
+	@${LD} ${LD_FLAGS} -o $@ -Ttext 0x1000 $^
 	@mv ${SYMBOLS} ${SYMBOLS}.elf
 	@${OBJCOPY} ${SYMBOLS}.elf ${SYMBOLS}
 	@rm ${SYMBOLS}.elf
@@ -67,8 +67,8 @@ build/multiboot_header.o: builddir
 	@nasm ${NASM_FLAGS} kernel/multiboot_header.asm -f elf -o build/multiboot_header.o
 
 build/boot_multiboot.o: builddir
-	@echo "KENTRY GAS: $@"
-	@${AS} ${AS_FLAGS} kernel/boot_multiboot.S -o build/boot_multiboot.o
+	@echo "KENTRY NASM: $@"
+	@nasm -felf32 kernel/boot_multiboot.asm -o build/boot_multiboot.o
 
 bootloader.bin: kernel_size
 	@echo "KENTRY: $@"

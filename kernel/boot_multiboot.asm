@@ -1,10 +1,11 @@
 ; Declare constants for the multiboot header.
 MBALIGN  equ  1 << 0            ; align loaded modules on page boundaries
 MEMINFO  equ  1 << 1            ; provide memory map
-FLAGS    equ  MBALIGN | MEMINFO ; this is the Multiboot 'flag' field
+VIDEO	 equ  1 << 2			; Include video mode
+FLAGS    equ  MBALIGN | MEMINFO | VIDEO ; this is the Multiboot 'flag' field
 MAGIC    equ  0x1BADB002        ; 'magic number' lets bootloader find the header
 CHECKSUM equ -(MAGIC + FLAGS)   ; checksum of above, to prove we are multiboot
- 
+
 ; Declare a multiboot header that marks the program as a kernel. These are magic
 ; values that are documented in the multiboot standard. The bootloader will
 ; search for this signature in the first 8 KiB of the kernel file, aligned at a
@@ -15,6 +16,18 @@ align 4
 	dd MAGIC
 	dd FLAGS
 	dd CHECKSUM
+
+	;AOUT kludge (???)
+	dd 0
+	dd 0
+	dd 0
+	dd 0
+	dd 0
+
+	dd 0
+	dd 640
+	dd 480
+	dd 1
  
 ; The multiboot standard does not define the value of the stack pointer register
 ; (esp) and it is up to the kernel to provide a stack. This allocates room for a
@@ -63,7 +76,9 @@ _start:
 	; yet. The GDT should be loaded here. Paging should be enabled here.
 	; C++ features such as global constructors and exceptions will require
 	; runtime support to work as well.
- 
+
+	lgdt [gdt_descriptor]	;Load GDT
+
 	; Enter the high-level kernel. The ABI requires the stack is 16-byte
 	; aligned at the time of the call instruction (which afterwards pushes
 	; the return pointer of size 4 bytes). The stack was originally 16-byte
@@ -74,10 +89,9 @@ _start:
 
     ; print `OK` to screen
     mov dword [0xb8000], 0x2f4b2f4f
-    hlt
     
-	;extern kernel_main
-	;call kernel_main
+	extern kernel_main
+	call kernel_main
  
 	; If the system has nothing more to do, put the computer into an
 	; infinite loop. To do that:
@@ -92,4 +106,38 @@ _start:
 	cli
 .hang:	hlt
 	jmp .hang
-.end:    
+_start.end:
+
+;Null segment
+gdt_start:
+	dq 0x0
+
+;Flat memory map, data and code is the same
+
+;Code segment descriptor
+gtd_code_seg:
+	dw 0xffff		;Segment length (bits 0-15)
+	dw 0x0			;Segment base (bits 0-15)
+	db 0x0			;Segment base (bits 16-23)
+	db 10011010b	;Flags
+	db 11001111b	;Flags + segment length (bits 16-19)
+	db 0x0			;Segment base (24-31)
+
+;Data segment descriptor
+gtd_data_seg:
+	dw 0xffff		;Segment length (bits 0-15)
+	dw 0x0			;Segment base (bits 0-15)
+	db 0x0			;Segment base (bits 16-23)
+	db 10010010b	;Flags
+	db 11001111b	;Flags + segment length (bits 16-19)
+	db 0x0			;Segment base (24-31)
+
+gdt_end:
+
+;Calculate GDT descriptor
+gdt_descriptor:
+	dw gdt_end-gdt_start-1	;Size of GDT
+	dd gdt_start			;Location of GDT
+
+CODE_SEG equ gtd_code_seg - gdt_start
+DATA_SEG equ gtd_data_seg - gdt_start

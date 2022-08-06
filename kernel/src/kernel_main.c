@@ -57,22 +57,22 @@ void kernel_main(void){
 	printk(K_INFO LOG_PREFIX "Testing the syscall interface...\n");
 
 	//Interrupts are currently not working
-	//asm volatile("mov $16, %eax");
-	//asm volatile("int $20");
+	asm volatile("mov $16, %eax");
+	asm volatile("int $20");
 
 	syscall_register(0, sample_syscall);
 	syscall_register(MAX_SYSCALLS, sample_syscall);
 
 	//Interrupts are currently not working
-	//asm volatile("mov $0, %eax");
-	//asm volatile("int $20");
+	asm volatile("mov $0, %eax");
+	asm volatile("int $20");
 
 	//Print OS information
 	printk("\nMONNOS, press ESC to quit\n\n");
 
 	//Interrupts are currently not working
 	//Give control to the interrupts
-	//asm volatile("sti");
+	asm volatile("sti");
 
 	//If an interrupt ends, halt the CPU again
 	while (1)

@@ -152,7 +152,7 @@ void irq_handler(registers_t* r){
  */
 void kernel_setup_interrupts(void){
 	//First of all remap the PICs for external interrupts
-	remap_pic();
+	//remap_pic();
 	isr_install();
 	load_idt();
 }

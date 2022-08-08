@@ -12,6 +12,8 @@
 #include "kernel/memory.h"
 #include "kernel/syscall.h"
 
+#include "kernel/serial.h"
+
 #define LOG_PREFIX "[KMAIN] "
 
 void keyboard_handler(registers_t *);
@@ -51,6 +53,8 @@ void kernel_main(void){
 
 	//Register the keypress handler
 	register_int_handler(33, key_event);
+
+	serial_set_divisor(SERIAL_1_PORT, BAUD_110);
 
 	//Initialize the syscall interface on interrupt 20
 	syscall_init(20);

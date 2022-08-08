@@ -48,6 +48,21 @@
 #define SERIAL_MSR_RI 6			//Ring Indicator
 #define SERIAL_MSR_DCD 7		//Data Carrier Detect
 
+enum serial_divisor{
+	BAUD_50 = 2304,
+	BAUD_110 = 1047,
+	BAUD_220 = 524,
+	BAUD_300 = 384,
+	BAUD_600 = 192,
+	BAUD_1200 = 96,
+	BAUD_2400 = 48,
+	BAUD_4800 = 24,
+	BAUD_9600 = 12,
+	BAUD_19200 = 6,
+	BAUD_38400 = 3,
+	BAUD_57600 = 2,
+	BAUD_115200 = 1
+};
 
 #define SERIAL_1_PORT 0x3F8		//The base address for COM1
 #define SERIAL_1_IRQ 4			//The IRQ assigned with COM1

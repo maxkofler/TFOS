@@ -6,6 +6,14 @@
 #include "hardcodes/hc_serial.h"
 
 /**
+ * @brief	Sets the serial chips clock divisor latch value to
+ * 			set the BAUD rate
+ * @param	base_port			The IO port the UART chip is found at
+ * @param	divisor				The divisor value
+ */
+void serial_set_divisor(uint16_t base_port, uint16_t divisor);
+
+/**
  * @brief	Initializes the serial port to a default state for this kernel:
  * 			- No interrupts
  * 			- Baudrate at 115200 (no divisor)

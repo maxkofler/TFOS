@@ -1,4 +1,3 @@
-
 #include "hardcodes/kernel.h"
 
 #include "kernel/vga.h"
@@ -19,10 +18,9 @@
 void keyboard_handler(registers_t *);
 void timer_handler(registers_t *);
 
-void sample_syscall(registers_t *);
+void serial_handler(registers_t *);
 
-uint8_t* _kernel_len = (uint8_t*)KERNEL_LEN_ADDR;
-uint8_t* _kernel_load_source = (uint8_t*)KERNEL_LOAD_SOURCE;
+void sample_syscall(registers_t *);
 
 /**
  * @brief	This is the kernel entry point, the kernel never returns,
@@ -53,8 +51,11 @@ void kernel_main(void){
 
 	//Register the keypress handler
 	register_int_handler(33, key_event);
+	register_int_handler(36, serial_handler);
 
 	serial_set_divisor(SERIAL_1_PORT, BAUD_110);
+	printk(K_DEBUG LOG_PREFIX "Set divisor: 0x%x\n", serial_get_divisor(SERIAL_1_PORT));
+	serial_set_reg_bit(SERIAL_1_PORT, SERIAL_REG_IER, SERIAL_INT_DA, 1);
 
 	//Initialize the syscall interface on interrupt 20
 	syscall_init(20);
@@ -85,4 +86,12 @@ void kernel_main(void){
 void sample_syscall(registers_t* r){
 	printk(K_INFO LOG_PREFIX "Sample syscall got called, id: 0x%x\n", r->eax);
 	return;
+}
+
+void serial_handler(registers_t *){
+	uint8_t rec = inb(SERIAL_1_PORT);
+
+	printk(K_DEBUG LOG_PREFIX "Serial recv: %x (%c)\n", rec, rec);
+
+	outb(SERIAL_1_PORT, rec);
 }

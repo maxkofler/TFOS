@@ -67,7 +67,7 @@ enum serial_divisor{
 #define SERIAL_1_PORT 0x3F8		//The base address for COM1
 #define SERIAL_1_IRQ 4			//The IRQ assigned with COM1
 
-#define SERIAL_2_PORT 0x2F8		//The base address for COM1
-#define SERIAL_2_IRQ 3			//The IRQ assigned with COM1
+#define SERIAL_2_PORT 0x2F8		//The base address for COM2
+#define SERIAL_2_IRQ 3			//The IRQ assigned with COM2
 
 #endif

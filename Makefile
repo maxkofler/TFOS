@@ -29,7 +29,8 @@ NASM_OBJECTS = $(patsubst %.asm, %.asm.o, ${NASM_SOURCES})
 all: builddir ${OUTPUT} clean_dev
 
 run: all
-	qemu-system-i386 -fda ${OUTPUT}
+	scripts/multiboot/mkiso.sh ${OUTPUT}
+	qemu-system-i386 -cdrom MONNOS.iso
 
 debug_run: ${SYMBOLS} all
 	bash -c "qemu-system-i386 -s -S -fda ${OUTPUT}&"

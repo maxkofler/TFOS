@@ -28,6 +28,10 @@ NASM_OBJECTS = $(patsubst %.asm, %.asm.o, ${NASM_SOURCES})
 
 all: builddir ${OUTPUT} clean_dev
 
+build/monnos_rs.o: builddir
+	cargo rustc --target-dir ./build -- --emit=obj
+	cp build/monnos/debug/deps/monnos_rs-*.o build/monnos_rs.o
+
 run: all
 	scripts/multiboot/mkiso.sh ${OUTPUT}
 	qemu-system-i386 -cdrom MONNOS.iso
@@ -40,7 +44,7 @@ show:
 
 MONNOS: builddir ${OUTPUT}
 
-${OUTPUT}: build/boot_multiboot.o ${C_OBJECTS} ${CXX_OBJECTS} ${NASM_OBJECTS}
+${OUTPUT}: build/monnos_rs.o build/boot_multiboot.o ${C_OBJECTS} ${CXX_OBJECTS} ${NASM_OBJECTS}
 	@echo "LD: $@"
 	@${LD} -T linker.ld ${LD_FLAGS} -o $@ -Ttext 0x1000 $^
 
@@ -74,4 +78,4 @@ clean: clean_dev
 	@-rm -rf ${OUTPUT} ${SYMBOLS}
 
 clean_dev:
-	@-rm -rf ${C_OBJECTS} ${CXX_OBJECTS} ${NASM_OBJECTS} ${KERNEL} bootloader.bin build/
+	@-rm -rf ${C_OBJECTS} ${CXX_OBJECTS} ${NASM_OBJECTS} ${KERNEL} bootloader.bin

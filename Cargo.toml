@@ -1,0 +1,11 @@
+[package]
+name = "monnos_rs"
+version = "0.1.0"
+edition = "2021"
+
+# Trick cargo, we won't use the binary, we're just interested in the .o file
+[[bin]]
+name = "monnos_rs"
+path = "kernel/kernel.rs"
+
+[dependencies]

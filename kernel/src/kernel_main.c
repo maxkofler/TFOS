@@ -30,7 +30,7 @@ void sample_syscall(registers_t *);
  * 			and then returns to the loop "while (1)", where it halts itself again,
  *			over and over again, this presents the kernel as a "service" to use 			
  */
-void kernel_main(void){
+void kernel_main_c(void){
 	vga_setup();
 
 	loglevel_current = K_L_DEBUG;

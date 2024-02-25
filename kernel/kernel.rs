@@ -1,5 +1,8 @@
 #![no_std]
 #![no_main]
+
+mod monnos;
+
 #[panic_handler]
 pub fn panic(_: &core::panic::PanicInfo) -> ! {
     loop {}

@@ -13,3 +13,4 @@ strip = true
 lto = true
 
 [dependencies]
+no-panic = "0.1.29"

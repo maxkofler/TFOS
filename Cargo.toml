@@ -1,11 +1,15 @@
 [package]
-name = "monnos_rs"
+name = "monnos"
 version = "0.1.0"
 edition = "2021"
 
-# Trick cargo, we won't use the binary, we're just interested in the .o file
-[[bin]]
-name = "monnos_rs"
+[lib]
+crate-type = ["staticlib"]
 path = "kernel/kernel.rs"
+
+[profile.dev]
+opt-level = "z"
+strip = true
+lto = true
 
 [dependencies]

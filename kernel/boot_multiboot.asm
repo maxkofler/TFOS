@@ -103,8 +103,8 @@ fix_cs:
     ; print `OK` to screen
     mov dword [0xb8000], 0x2f4b2f4f
     
-	extern kernel_main
-	call kernel_main
+	extern kernel_entry
+	call kernel_entry
  
 	; If the system has nothing more to do, put the computer into an
 	; infinite loop. To do that:

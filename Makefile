@@ -1,9 +1,6 @@
 CC = i686-elf-gcc
 CC_FLAGS = -g -m32 -ffreestanding -nostdlib -Wall -Wextra -Ikernel/include -Ikenrel/include/libc
 
-CXX = i686-elf-g++
-CXX_FLAGS = -g -m32 -ffreestanding -nostdlib -Wall -Wextra -Ikernel/include -Ikernel//include/libc
-
 LD = i686-elf-ld
 LD_FLAGS = 
 
@@ -17,24 +14,14 @@ NASM_FLAGS = -Ikernel/
 OUTPUT = MONNOS.bin
 SYMBOLS = MONNOS.sym
 
-C_SOURCES = $(shell find kernel/src/ -type f -name '**.c')
-C_OBJECTS = $(patsubst %.c, %.c.o, ${C_SOURCES})
-
-CXX_SOURCES = $(shell find kernel/src/ -type f -name '**.cpp')
-CXX_OBJECTS = $(patsubst %.cpp, %.cpp.o, ${CXX_SOURCES})
-
-NASM_SOURCES = $(shell find kernel/src/ -type f -name '**.asm')
-NASM_OBJECTS = $(patsubst %.asm, %.asm.o, ${NASM_SOURCES})
-
 all: builddir ${OUTPUT} clean_dev
 
-build/monnos_rs.o: builddir
-	cargo rustc --target-dir ./build -- --emit=obj
-	cp build/monnos/debug/deps/monnos_rs-*.o build/monnos_rs.o
+build/monnos/debug/libmonnos.a: builddir
+	cargo build --target-dir ./build
 
 run: all
 	scripts/multiboot/mkiso.sh ${OUTPUT}
-	qemu-system-i386 -cdrom MONNOS.iso
+	qemu-system-i386 -cdrom MONNOS.iso -serial stdio
 
 debug_run: ${SYMBOLS} all
 	bash -c "qemu-system-i386 -s -S -fda ${OUTPUT}&"
@@ -44,7 +31,7 @@ show:
 
 MONNOS: builddir ${OUTPUT}
 
-${OUTPUT}: build/monnos_rs.o build/boot_multiboot.o ${C_OBJECTS} ${CXX_OBJECTS} ${NASM_OBJECTS}
+${OUTPUT}: build/boot_multiboot.o kernel/kernel_entry.o build/monnos/debug/libmonnos.a
 	@echo "LD: $@"
 	@${LD} -T linker.ld ${LD_FLAGS} -o $@ -Ttext 0x1000 $^
 
@@ -66,10 +53,6 @@ builddir:
 	@echo "CC: $^"
 	@${CC} ${CC_FLAGS} -c $^ -o $@
 
-%.cpp.o: %.cpp
-	@echo "CXX: $^"
-	@${CXX} ${CXX_FLAGS} -c $^ -o $@
-
 %.asm.o: %.asm	
 	@echo "NASM: $^"
 	@nasm $^ -f elf -o $@
@@ -78,4 +61,4 @@ clean: clean_dev
 	@-rm -rf ${OUTPUT} ${SYMBOLS}
 
 clean_dev:
-	@-rm -rf ${C_OBJECTS} ${CXX_OBJECTS} ${NASM_OBJECTS} ${KERNEL} bootloader.bin
+	@-rm -rf bootloader.bin

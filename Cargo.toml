@@ -7,4 +7,9 @@ edition = "2021"
 crate-type = ["staticlib"]
 path = "src/kernel.rs"
 
+[profile.dev]
+opt-level = "z"
+strip = true
+lto = true
+
 [dependencies]

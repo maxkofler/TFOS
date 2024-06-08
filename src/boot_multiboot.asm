@@ -40,26 +40,6 @@ stack_top:
 section .text
 global _start:function (_start.end - _start)
 _start:
-    ; The bootloader has loaded us into 32-bit protected mode on a x86
-    ; machine. Interrupts are disabled. Paging is disabled. The processor
-    ; state is as defined in the multiboot standard. The kernel has full
-    ; control of the CPU. The kernel can only make use of hardware features
-    ; and any code it provides as part of itself. There's no printf
-    ; function, unless the kernel provides its own <stdio.h> header and a
-    ; printf implementation. There are no security restrictions, no
-    ; safeguards, no debugging mechanisms, only what the kernel provides
-    ; itself. It has absolute and complete power over the
-    ; machine.
- 
-    ; This is a good place to initialize crucial processor state before the
-    ; high-level kernel is entered. It's best to minimize the early
-    ; environment where crucial features are offline. Note that the
-    ; processor is not fully initialized yet: Features such as floating
-    ; point instructions and instruction set extensions are not initialized
-    ; yet. The GDT should be loaded here. Paging should be enabled here.
-    ; C++ features such as global constructors and exceptions will require
-    ; runtime support to work as well.
-
     lgdt [gdt_descriptor]	;Load GDT
 
     ; We now need to fix some stuff the bootloader does to our code segments,
@@ -90,7 +70,12 @@ fix_cs:
 
     ; print `OK` to screen
     mov dword [0xb8000], 0x2f4b2f4f
-    
+
+    ; Push EBX onto the stack for the kernel,
+    ; this is the address of the multiboot information
+    ; structure that gives us vital information about the
+    ; system we're running on
+    push ebx
     extern kernel_entry
     call kernel_entry
  

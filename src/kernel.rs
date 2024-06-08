@@ -7,7 +7,7 @@ use core::panic::PanicInfo;
 mod monnos;
 
 #[no_mangle]
-fn kernel_entry() -> ! {
+extern "C" fn kernel_entry(multiboot_info: u32) -> ! {
     let port: u16 = 0x3f8;
 
     let string = "MONNOS";

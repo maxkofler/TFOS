@@ -24,20 +24,22 @@ run: all
 	qemu-system-i386 -cdrom MONNOS.iso -serial stdio
 
 debug_run: ${SYMBOLS} all
-	bash -c "qemu-system-i386 -s -S -fda ${OUTPUT}&"
+	scripts/multiboot/mkiso.sh ${OUTPUT}
+	bash -c "qemu-system-i386 -s -S -cdrom MONNOS.iso -serial stdio&"
 
 show:
 	@echo ${C_SOURCES} ${CXX_SOURCES} ${NASM_SOURCES}
 
 MONNOS: builddir ${OUTPUT}
 
-${OUTPUT}: build/boot_multiboot.o build/libmonnos.a
+
+${OUTPUT}: build/boot_multiboot.o build/libmonnos.a src/monnos/interrupts/irq_x86.asm.o
 	@echo "LD: $@"
 	@${LD} -T linker.ld ${LD_FLAGS} -o $@ -Ttext 0x1000 $^
 
-${SYMBOLS}: ${C_OBJECTS} ${CXX_OBJECTS} ${NASM_OBJECTS}
+${SYMBOLS}: build/boot_multiboot.o build/libmonnos.a 
 	@echo "SYM: $^"
-	@${LD} ${LD_FLAGS} -o $@ -Ttext 0x1000 $^
+	@${LD} -T linker.ld ${LD_FLAGS} -o $@ -Ttext 0x1000 $^
 	@mv ${SYMBOLS} ${SYMBOLS}.elf
 	@${OBJCOPY} ${SYMBOLS}.elf ${SYMBOLS}
 	@rm ${SYMBOLS}.elf

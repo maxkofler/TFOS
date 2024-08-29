@@ -16,4 +16,5 @@ panic = 'abort'   # Abort on panic
 strip = true      # Strip symbols from binary
 
 [dependencies]
+log = "0.4.22"
 x86 = "0.52.0"

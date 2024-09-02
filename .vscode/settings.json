@@ -1,5 +1,9 @@
 {
+  "rust-analyzer.check.allTargets": false,
   "cSpell.words": [
+    "ACPI",
+    "bootloader",
+    "cmdline",
     "dtables",
     "eflags",
     "eseresp",
@@ -7,9 +11,12 @@
     "IRQS",
     "ISRS",
     "lidt",
+    "mmap",
     "monnos",
     "multiboot",
+    "nullterminated",
     "repr",
+    "syms",
     "UART"
   ]
 }

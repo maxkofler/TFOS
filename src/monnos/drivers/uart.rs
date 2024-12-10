@@ -56,7 +56,7 @@ impl BlockingUART {
     pub fn data_available(&self) -> bool {
         // Register 5 (Line Status Register)
         // Bit 0 (Data Ready)
-        in8(self.base + 5) >> 0 & 0x01 == 0x01
+        in8(self.base + 5) & 0x01 == 0x01
     }
 
     /// Writes a byte in blocking manner
@@ -85,18 +85,24 @@ impl BlockingUART {
     /// Creates a new blocking UART without any checks
     /// # Arguments
     /// * `base` - The base port for the UART chip
+    /// # Safety
+    /// This function does not check for anything
     pub unsafe fn new_unchecked(base: u16) -> Self {
         Self { base }
     }
 
     /// Reads from the receiver buffer directly without checking
     /// if there is data available
+    /// # Safety
+    /// This will not check if there is valid data to be read
     pub unsafe fn read_unchecked(&mut self) -> u8 {
         in8(self.base)
     }
 
     /// Writes directly to the Transmit Holding Register without
     /// checking if the UART can accept new bytes
+    /// # Safety
+    /// This will not check if the buffer is writable or ready
     pub unsafe fn write_unchecked(&mut self, byte: u8) {
         out8(self.base, byte)
     }

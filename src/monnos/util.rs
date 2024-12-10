@@ -7,6 +7,9 @@ use core::str;
 ///
 /// Finds the length of the string by iterating over it until
 /// the 0 byte and assumes a UTF-8 string from that
+/// # Safety
+/// This is safe as long as the string has a reachable NULL byte (`\0?`)
+/// otherwise this may construct an overly large string
 pub unsafe fn str_from_nullterminated(ptr: *const u8) -> &'static str {
     let mut len = 0usize;
 

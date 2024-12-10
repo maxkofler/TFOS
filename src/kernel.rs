@@ -43,5 +43,6 @@ extern "C" fn kernel_entry(_pos_multiboot_info: u32) -> ! {
 
     info!("Monnos is ready!");
 
+    #[allow(clippy::empty_loop)]
     loop {}
 }

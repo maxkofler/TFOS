@@ -44,13 +44,15 @@ impl ISRGuard {
     /// # Arguments
     /// * `entry` - The entry to manipulate
     /// * `function` - The new function to register
-    fn register<'a>(
+    fn register(
         entry: &'static mut Option<&'static dyn Fn(InterruptPayload)>,
-        function: &'a dyn Fn(InterruptPayload),
+        function: &dyn Fn(InterruptPayload),
     ) -> Self {
         let old_function = *entry;
 
-        *entry = Some(unsafe { core::mem::transmute(function) });
+        *entry = Some(unsafe {
+            core::mem::transmute::<&dyn Fn(InterruptPayload), &dyn Fn(InterruptPayload)>(function)
+        });
 
         Self {
             entry,
@@ -63,10 +65,7 @@ impl ISRGuard {
 /// # Arguments
 /// * `pos` - The position to register the interrupt at
 /// * `function` - The function to register at this position
-pub fn register_isr_x86<'a>(
-    pos: usize,
-    function: &'a dyn Fn(InterruptPayload),
-) -> Result<ISRGuard, ()> {
+pub fn register_isr_x86(pos: usize, function: &dyn Fn(InterruptPayload)) -> Result<ISRGuard, ()> {
     if pos > NUM_ISRS {
         return Err(());
     }
@@ -80,10 +79,7 @@ pub fn register_isr_x86<'a>(
 /// # Arguments
 /// * `pos` - The position to register the interrupt at
 /// * `function` - The function to register at this position
-pub fn register_irq_x86<'a>(
-    pos: usize,
-    function: &'a dyn Fn(InterruptPayload),
-) -> Result<ISRGuard, ()> {
+pub fn register_irq_x86(pos: usize, function: &dyn Fn(InterruptPayload)) -> Result<ISRGuard, ()> {
     if pos > NUM_IRQS {
         return Err(());
     }
@@ -173,11 +169,11 @@ struct IDTGate32Raw {
 impl From<IDTGateX86> for IDTGate32Raw {
     fn from(value: IDTGateX86) -> Self {
         Self {
-            offset_low: value.offset as u16 & 0xFFFF,
+            offset_low: value.offset as u16,
             segment_selector: value.segment_selector.bits(),
             zero: 0,
             attributes: (1 << 7 | (value.ring as u8) << 5 | (value.ty as u8)),
-            offset_high: (value.offset >> 16) as u16 & 0xFFFF,
+            offset_high: (value.offset >> 16) as u16,
         }
     }
 }

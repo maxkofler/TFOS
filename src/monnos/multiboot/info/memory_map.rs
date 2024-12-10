@@ -20,7 +20,7 @@ impl<'a> MemoryMap<'a> {
     /// Creates an iterator over the memory map
     /// that yields memory segments
     pub fn iter(&self) -> MemoryMapIterator {
-        MemoryMapIterator { data: &self.data }
+        MemoryMapIterator { data: self.data }
     }
 }
 
@@ -34,13 +34,13 @@ impl<'a> Iterator for MemoryMapIterator<'a> {
     type Item = Option<MemoryRegion<'a>>;
 
     fn next(&mut self) -> Option<Self::Item> {
-        if self.data.len() > 0 {
+        if !self.data.is_empty() {
             let size = u32::from_le_bytes(self.data[0..4].try_into().unwrap());
             self.data = &self.data[4..];
 
             let ptr = self.data.as_ptr();
 
-            let region_raw: &MemoryRegionRaw = unsafe { core::mem::transmute(ptr) };
+            let region_raw: &MemoryRegionRaw = unsafe { &*(ptr as *const MemoryRegionRaw) };
             let region = MemoryRegion::try_from_raw(region_raw.clone());
 
             self.data = &self.data[size as usize..];
@@ -62,7 +62,7 @@ pub struct MemoryRegion<'a> {
     pub ty: MemoryRegionType,
 }
 
-impl<'a> MemoryRegion<'a> {
+impl MemoryRegion<'_> {
     fn try_from_raw(mut value: MemoryRegionRaw) -> Option<Self> {
         if value.base == 0 {
             value.base += 1;
@@ -80,7 +80,7 @@ impl<'a> MemoryRegion<'a> {
     }
 }
 
-impl<'a> Debug for MemoryRegion<'a> {
+impl Debug for MemoryRegion<'_> {
     fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         f.debug_struct("MemoryRegion")
             .field("start", &self.data.as_ptr())

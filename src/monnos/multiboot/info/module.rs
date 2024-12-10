@@ -29,12 +29,12 @@ pub struct ModuleRaw {
 
 impl ModuleRaw {
     /// Parses a raw module into a parsed [Module]
-    pub fn parse<'a>(&'a self) -> Module<'a> {
+    pub fn parse(&self) -> Module {
         Module::from(self)
     }
 }
 
-impl<'a> From<&ModuleRaw> for Module<'a> {
+impl From<&ModuleRaw> for Module<'_> {
     fn from(value: &ModuleRaw) -> Self {
         let data_len = value.mod_end - value.mod_start;
         let data = value.mod_start as *const u8;

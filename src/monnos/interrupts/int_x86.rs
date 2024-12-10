@@ -16,10 +16,15 @@ static mut IDT_X86: [IDTGate32Raw; 0xFF] = [IDTGate32Raw {
 /// The length of the IDT on X86
 pub const DEFAULT_IDT_LEN_X86: usize = 58;
 
+/// The amount of interrupt service routines
+const NUM_ISRS: usize = 32;
+/// The amount of interrupt request routines
+const NUM_IRQS: usize = 16;
+
 /// Pointers to interrupt service routines
-static mut ISRS: [Option<&dyn Fn(InterruptPayload)>; 32] = [None; 32];
+static mut ISRS: [Option<&dyn Fn(InterruptPayload)>; NUM_ISRS] = [None; NUM_ISRS];
 /// Pointers to interrupt request routines
-static mut IRQS: [Option<&dyn Fn(InterruptPayload)>; 16] = [None; 16];
+static mut IRQS: [Option<&dyn Fn(InterruptPayload)>; NUM_IRQS] = [None; NUM_IRQS];
 
 /// An ISR guard that automatically returns
 /// the previous ISR in the IDT
@@ -62,7 +67,7 @@ pub fn register_isr_x86<'a>(
     pos: usize,
     function: &'a dyn Fn(InterruptPayload),
 ) -> Result<ISRGuard, ()> {
-    if pos > unsafe { ISRS.len() } {
+    if pos > NUM_ISRS {
         return Err(());
     }
 
@@ -79,7 +84,7 @@ pub fn register_irq_x86<'a>(
     pos: usize,
     function: &'a dyn Fn(InterruptPayload),
 ) -> Result<ISRGuard, ()> {
-    if pos > unsafe { IRQS.len() } {
+    if pos > NUM_IRQS {
         return Err(());
     }
 
@@ -185,11 +190,9 @@ pub fn load_idt_x86<const N: usize>(idt: &IDTX86<N>) {
         unsafe { IDT_X86[i] = gates[i].clone().into() }
     }
 
-    let lidt_ptr = unsafe {
-        DescriptorTablePointer {
-            limit: (size_of::<IDTGate32Raw>() * gates.len()) as u16,
-            base: addr_of!(IDT_X86) as *const u32,
-        }
+    let lidt_ptr = DescriptorTablePointer {
+        limit: (size_of::<IDTGate32Raw>() * gates.len()) as u16,
+        base: addr_of!(IDT_X86) as *const u32,
     };
 
     unsafe { x86::dtables::lidt(&lidt_ptr) };
@@ -198,7 +201,7 @@ pub fn load_idt_x86<const N: usize>(idt: &IDTX86<N>) {
 #[no_mangle]
 extern "C" fn isr_handler(payload: &CInterruptPayload) {
     // Try to find the appropriate IRQ handler
-    if (payload.int_no) as usize > unsafe { ISRS.len() } {
+    if (payload.int_no) as usize > NUM_ISRS {
         kernel_panic("ISR num exceeds max number of supported ISRs");
     }
 
@@ -210,7 +213,7 @@ extern "C" fn isr_handler(payload: &CInterruptPayload) {
 
 #[no_mangle]
 extern "C" fn irq_handler(payload: &CInterruptPayload) {
-    let num_isrs = unsafe { ISRS.len() as u32 };
+    let num_isrs = NUM_ISRS as u32;
 
     // All interrupts below 17 are traps which we can't recover from
     if payload.int_no < num_isrs {
@@ -220,7 +223,7 @@ extern "C" fn irq_handler(payload: &CInterruptPayload) {
     let irq_num = payload.int_no - num_isrs;
 
     // Try to find the appropriate IRQ handler
-    if irq_num as usize > unsafe { IRQS.len() } {
+    if irq_num as usize > NUM_IRQS {
         kernel_panic("IRQ num exceeds max number of supported IRQs");
     }
 

@@ -1,5 +1,10 @@
 //! Functions for interfacing with PCI
+use configuration::PCIHeader;
+
 use super::port::{in32, out32};
+
+pub mod configuration;
+pub mod strings;
 
 /// The `config` port for the PCI configuration space
 const PORT_CFG_ADDR: u16 = 0xCF8;
@@ -37,4 +42,18 @@ pub fn config_io_read_registers<const N: usize>(bus: u8, device: u8, function: u
     }
 
     data
+}
+
+/// Does a simple enumeration of the PCI bus, assuming all devices
+/// and bridges are already configured properly
+pub fn enumerate_simple<F: Fn(u8, u8, PCIHeader)>(f: F) {
+    for bus_number in 0..=0xFF {
+        for device_number in 0..16 {
+            let c = PCIHeader::try_get(bus_number, device_number, 0);
+
+            if let Some(header) = c {
+                f(bus_number, device_number, header);
+            }
+        }
+    }
 }

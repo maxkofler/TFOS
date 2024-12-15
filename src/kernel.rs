@@ -3,6 +3,8 @@
 #![allow(dead_code)]
 #![feature(sync_unsafe_cell)]
 
+use core::arch::asm;
+
 use log::{debug, info, Level, LevelFilter};
 use monnos::{
     drivers::uart::{BlockingUART, COM_BASE},
@@ -58,5 +60,7 @@ extern "C" fn kernel_entry(_pos_multiboot_info: u32) -> ! {
     info!("Monnos is ready!");
 
     #[allow(clippy::empty_loop)]
-    loop {}
+    loop {
+        unsafe { asm!("hlt") };
+    }
 }

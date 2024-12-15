@@ -7,6 +7,7 @@ use log::{debug, info, Level, LevelFilter};
 use monnos::{
     drivers::uart::{BlockingUART, COM_BASE},
     interrupts,
+    io::pci::{self, configuration::PCIHeader, strings::get_pci_class_string},
     log::MONNOSLogger,
 };
 
@@ -40,6 +41,19 @@ extern "C" fn kernel_entry(_pos_multiboot_info: u32) -> ! {
     }
 
     interrupts::enable_interrupts();
+
+    pci::enumerate_simple(|bus_number, device_number, header| {
+        if let PCIHeader::Device(device) = header {
+            debug!(
+                "{:x}:{:x} Found PCI device: {}",
+                bus_number,
+                device_number,
+                get_pci_class_string(device.class, device.subclass, device.programming_interface)
+            )
+        }
+    });
+
+    debug!("PCI Enumeration done");
 
     info!("Monnos is ready!");
 

@@ -11,6 +11,7 @@ use monnos::{
     interrupts,
     io::pci::{self, configuration::PCIHeader, strings::get_pci_class_string},
     log::MONNOSLogger,
+    multiboot::info::parse_boot_info,
 };
 
 pub mod monnos;
@@ -26,7 +27,7 @@ fn get_first_uart() -> Option<(usize, BlockingUART)> {
 }
 
 #[no_mangle]
-extern "C" fn kernel_entry(_pos_multiboot_info: u32) -> ! {
+extern "C" fn kernel_entry(pos_multiboot_info: u32) -> ! {
     let (_com_num, uart) = get_first_uart().expect("Some working UART");
 
     let logger = MONNOSLogger::new(uart, Level::Trace);
@@ -40,6 +41,15 @@ extern "C" fn kernel_entry(_pos_multiboot_info: u32) -> ! {
         if BlockingUART::new(*base).is_some() {
             debug!("Found working UART COM{num}");
         }
+    }
+
+    let multiboot_info = parse_boot_info(pos_multiboot_info);
+    let cmdline = multiboot_info.cmdline.unwrap_or("");
+    info!("Kernel cmdline: '{cmdline}'");
+
+    for module in multiboot_info.modules.unwrap_or(&[]) {
+        let module = module.parse();
+        info!("Found multiboot module '{}'", module.string,);
     }
 
     interrupts::enable_interrupts();

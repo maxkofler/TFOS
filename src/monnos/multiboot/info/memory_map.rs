@@ -5,33 +5,33 @@ use core::fmt::Debug;
 /// The structure to describe a memory map
 /// in the multiboot information header
 #[derive(Debug)]
-pub struct MemoryMap<'a> {
+pub struct MemoryMap {
     /// The data that is contained in this memory map
-    data: &'a [u8],
+    data: &'static [u8],
 }
 
-impl<'a> MemoryMap<'a> {
+impl MemoryMap {
     /// Creates a new memory map that wraps the supplied
     /// buffer containing memory information
-    pub fn new(data: &'a [u8]) -> Self {
+    pub fn new(data: &'static [u8]) -> Self {
         Self { data }
     }
 
     /// Creates an iterator over the memory map
     /// that yields memory segments
-    pub fn iter(&self) -> MemoryMapIterator {
+    pub fn iter(self) -> MemoryMapIterator {
         MemoryMapIterator { data: self.data }
     }
 }
 
 /// An iterator over memory regions in the multiboot memory
 /// map structure
-pub struct MemoryMapIterator<'a> {
-    data: &'a [u8],
+pub struct MemoryMapIterator {
+    data: &'static [u8],
 }
 
-impl<'a> Iterator for MemoryMapIterator<'a> {
-    type Item = Option<MemoryRegion<'a>>;
+impl Iterator for MemoryMapIterator {
+    type Item = Option<MemoryRegion>;
 
     fn next(&mut self) -> Option<Self::Item> {
         if !self.data.is_empty() {
@@ -54,15 +54,15 @@ impl<'a> Iterator for MemoryMapIterator<'a> {
 
 /// A memory region as described by the multiboot
 /// information structure
-pub struct MemoryRegion<'a> {
+pub struct MemoryRegion {
     /// A slice over the data that is available
     /// in this memory region
-    pub data: &'a mut [u8],
+    pub data: &'static mut [u8],
     /// The type of memory region
     pub ty: MemoryRegionType,
 }
 
-impl MemoryRegion<'_> {
+impl MemoryRegion {
     fn try_from_raw(mut value: MemoryRegionRaw) -> Option<Self> {
         if value.base == 0 {
             value.base += 1;
@@ -80,7 +80,7 @@ impl MemoryRegion<'_> {
     }
 }
 
-impl Debug for MemoryRegion<'_> {
+impl Debug for MemoryRegion {
     fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         f.debug_struct("MemoryRegion")
             .field("start", &self.data.as_ptr())

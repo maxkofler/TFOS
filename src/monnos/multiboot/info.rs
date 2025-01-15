@@ -56,7 +56,7 @@ pub struct MultibootInformation<'a> {
 
     // Present if flags[6] is set
     /// Provides
-    pub memory_map: Option<MemoryMap<'a>>,
+    pub memory_map: Option<MemoryMap>,
 }
 
 /// Parses the boot information that the multiboot

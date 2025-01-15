@@ -13,7 +13,8 @@ use monnos::{
     interrupts,
     io::pci::{self, configuration::PCIHeader, strings::get_pci_class_string},
     log::MONNOSLogger,
-    multiboot::info::parse_boot_info,
+    memory::{set_memory_area, MemoryArea},
+    multiboot::info::{memory_map::MemoryRegion, parse_boot_info},
 };
 
 pub mod monnos;
@@ -52,6 +53,38 @@ extern "C" fn kernel_entry(pos_multiboot_info: u32) -> ! {
     for module in multiboot_info.modules.unwrap_or(&[]) {
         let module = module.parse();
         info!("Found multiboot module '{}'", module.string,);
+    }
+
+    let mut largest_area: Option<MemoryRegion> = None;
+
+    if let Some(memory_map) = multiboot_info.memory_map {
+        for mut entry in memory_map.iter() {
+            if let Some(entry) = entry.take() {
+                debug!("Memory region: {entry:x?} ({} bytes)", entry.data.len());
+
+                if let Some(ref largest) = largest_area {
+                    if largest.data.len() < entry.data.len() {
+                        largest_area.replace(entry);
+                    }
+                } else {
+                    largest_area.replace(entry);
+                }
+            }
+        }
+    }
+
+    if let Some(largest) = largest_area {
+        debug!(
+            "Using {largest:x?} ({} bytes) as main region",
+            largest.data.len()
+        );
+
+        unsafe {
+            set_memory_area(MemoryArea::new(
+                largest.data.as_ptr() as *mut (),
+                largest.data.len(),
+            ))
+        };
     }
 
     interrupts::enable_interrupts();

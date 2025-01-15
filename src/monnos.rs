@@ -8,3 +8,5 @@ pub mod util;
 
 mod asm;
 pub mod log;
+
+pub mod memory;

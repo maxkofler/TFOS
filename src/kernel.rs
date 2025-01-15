@@ -3,6 +3,8 @@
 #![allow(dead_code)]
 #![feature(sync_unsafe_cell)]
 
+extern crate alloc;
+
 use core::arch::asm;
 
 use log::{debug, info, Level, LevelFilter};

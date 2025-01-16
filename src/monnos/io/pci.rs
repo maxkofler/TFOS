@@ -46,7 +46,7 @@ pub fn config_io_read_registers<const N: usize>(bus: u8, device: u8, function: u
 
 /// Does a simple enumeration of the PCI bus, assuming all devices
 /// and bridges are already configured properly
-pub fn enumerate_simple<F: Fn(u8, u8, PCIHeader)>(f: F) {
+pub fn enumerate_simple<F: FnMut(u8, u8, PCIHeader)>(mut f: F) {
     for bus_number in 0..=0xFF {
         for device_number in 0..16 {
             let c = PCIHeader::try_get(bus_number, device_number, 0);

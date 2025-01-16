@@ -1,7 +1,7 @@
 /// The header structure for a normal PCI device
 /// (Header type = `0x00`)
 #[repr(C, align(1))]
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct PCIDeviceHeader {
     /// The vendor id for the PCI device
     pub vendor_id: u16,
